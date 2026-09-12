@@ -30,147 +30,147 @@ const METADATA_100: Record<
   }
 > = {
   '1': {
-    burmesePhonetic: 'ဖုမ်း',
+    burmesePhonetic: 'ဖုန်(မ်)',
     tone: 'Rising Tone (အသံမြင့်ဆွဲ)',
     explanation: 'အမျိုးသားများ မိမိကိုယ်ကို ညွှန်းဆိုရာတွင် ယဉ်ကျေးစွာ အသုံးပြုသော နာမ်စားဖြစ်သည်။',
     exampleThai: 'ผมชื่อมิน',
     exampleBurmese: 'ကျွန်တော့်နာမည် မင်း ပါ။',
   },
   '2': {
-    burmesePhonetic: 'ဒိချန်း',
-    tone: 'High Tone (အသံမြင့်)',
+    burmesePhonetic: 'ဒီချန်(န်)',
+    tone: 'Low + High Tone',
     explanation: 'အမျိုးသမီးများ တရားဝင် အစည်းအဝေးနှင့် ယဉ်ကျေးသော စကားပြောဆိုမှုတွင် သုံးသော နာမ်စားဖြစ်သည်။',
     exampleThai: 'ดิฉันเป็นคนพม่า',
     exampleBurmese: 'ကျွန်မ မြန်မာလူမျိုး ဖြစ်ပါတယ်။',
   },
   '3': {
-    burmesePhonetic: 'ချန်း',
+    burmesePhonetic: 'ချန်(န်)',
     tone: 'High Tone (အသံမြင့်)',
     explanation: 'သူငယ်ချင်းအချင်းချင်း ရင်းနှီးစွာ ပြောဆိုရာတွင် အသုံးများသော စကားလုံးဖြစ်သည်။',
     exampleThai: 'ฉันรักเธอ',
     exampleBurmese: 'ငါ နင့်ကို ချစ်တယ်။',
   },
   '4': {
-    burmesePhonetic: 'ခုန်',
+    burmesePhonetic: 'ခူ(န်)',
     tone: 'Mid Tone (အလယ်သံ)',
     explanation: 'တစ်ဖက်သားကို ယဉ်ကျေးစွာ ခေါ်ဝေါ်သော စကားလုံးဖြစ်ပြီး နာမည်ရှေ့တွင်လည်း ဂုဏ်ပုဒ်အဖြစ် သုံးသည်။',
     exampleThai: 'คุณสบายดีไหม',
     exampleBurmese: 'ခင်ဗျား/ရှင် နေကောင်းပါသလား။',
   },
   '5': {
-    burmesePhonetic: 'ခေါဝ်',
+    burmesePhonetic: 'ခေါင်(ဝ်)',
     tone: 'Rising Tone (အသံမြင့်ဆွဲ)',
-    explanation: 'တတိယပုဂ္ဂိုလ် (သူ သို့မဟုတ် သူတို့) ကို ရည်ညွှန်းရာတွင် အသုံးပြုသည်။',
+    explanation: 'တတိယပုဂ္ဂိုလ် (သူ သို့မဟုတ် သူမ) ကို ရည်ညွှန်းရာတွင် အသုံးပြုသည်။',
     exampleThai: 'เขาไปทำงาน',
     exampleBurmese: 'သူ အလုပ်သွားပါတယ်။',
   },
   '6': {
-    burmesePhonetic: 'ထိုဝါ',
-    tone: 'Mid Tone (အလယ်သံ)',
-    explanation: 'အမျိုးသမီး သို့မဟုတ် ရင်းနှီးသူကို ရည်ညွှန်းပြောဆိုရာတွင် သုံးသည်။',
-    exampleThai: 'เธอชอบกินอะไร',
-    exampleBurmese: 'သူမ ဘာစားရတာ ကြိုက်သလဲ။',
+    burmesePhonetic: 'ဖုဝက်(က်)ခေါင်(ဝ်)',
+    tone: 'Falling + Rising',
+    explanation: 'တတိယပုဂ္ဂိုလ်များဖြစ်သော သူတို့အဖွဲ့ကို ရည်ညွှန်းသော အများကိန်း နာမ်စားဖြစ်သည်။',
+    exampleThai: 'พวกเขาเป็นเพื่อนกัน',
+    exampleBurmese: 'သူတို့ဟာ သူငယ်ချင်းတွေ ဖြစ်ကြပါတယ်။',
   },
   '7': {
-    burmesePhonetic: 'ရောင်',
+    burmesePhonetic: 'ရောင်(ဝ်) / လောင်(ဝ်)',
     tone: 'Mid Tone (အလယ်သံ)',
     explanation: 'ငါတို့၊ ကျွန်ုပ်တို့ သို့မဟုတ် စကားပြောရာတွင် မိမိကိုယ်ကို ရင်းနှီးစွာ ခေါ်ဆိုရာ၌ သုံးသည်။',
     exampleThai: 'เราไปด้วยกัน',
     exampleBurmese: 'ငါတို့ အတူတူ သွားကြမယ်။',
   },
   '8': {
-    burmesePhonetic: 'ထန်း',
+    burmesePhonetic: 'ထာန့်(န်)',
     tone: 'Falling Tone (အသံနိမ့်ကျ)',
     explanation: 'လူကြီးမိဘ၊ ဆရာသမားနှင့် အဆင့်မြင့် အရာရှိများကို လေးစားသမှု ပြုရာတွင် သုံးသော နာမ်စားဖြစ်သည်။',
     exampleThai: 'ท่านนายก',
     exampleBurmese: 'ဝန်ကြီးချုပ်မင်း',
   },
   '9': {
-    burmesePhonetic: 'ဖုဝတ်-ရောင်',
+    burmesePhonetic: 'ဖုဝက်(က်)ရောင်(ဝ်)',
     tone: 'Falling + Mid',
     explanation: 'အများကိန်းဖြစ်ပြီး ကျွန်တော်တို့/ကျွန်မတို့ အဖွဲ့ကို ရည်ညွှန်းသည်။',
     exampleThai: 'พวกเราพร้อมแล้ว',
     exampleBurmese: 'ကျွန်တော်တို့ အဆင်သင့်ဖြစ်ပါပြီ။',
   },
   '10': {
-    burmesePhonetic: 'ထုခ်-ခွန်',
+    burmesePhonetic: 'ထုခ်(က်)ခူ(န်)',
     tone: 'High + Mid',
     explanation: 'ရှိရှိသမျှ လူအားလုံးကို ခြုံငုံခေါ်ဝေါ်သော စကားစုဖြစ်သည်။',
     exampleThai: 'สวัสดีทุกคน',
     exampleBurmese: 'အားလုံးပဲ မင်္ဂလာပါ။',
   },
   '11': {
-    burmesePhonetic: 'ဖော',
+    burmesePhonetic: 'ဖော့',
     tone: 'Falling Tone (အသံနိမ့်ကျ)',
     explanation: 'မိသားစုတွင် ဖခင်ဖြစ်သူကို ခေါ်ဝေါ်သော အခြေခံဝေါဟာရဖြစ်သည်။',
     exampleThai: 'พ่อของฉันใจดี',
     exampleBurmese: 'ကျွန်တော့်အဖေက သဘောကောင်းပါတယ်။',
   },
   '12': {
-    burmesePhonetic: 'မဲ',
+    burmesePhonetic: 'မဲ့',
     tone: 'Falling Tone (အသံနိမ့်ကျ)',
     explanation: 'မိသားစုတွင် မိခင်ဖြစ်သူကို ချစ်ခင်စွာ ခေါ်ဆိုသော စကားလုံးဖြစ်သည်။',
     exampleThai: 'แม่ทำกับข้าวอร่อย',
     exampleBurmese: 'အမေ ဟင်းချက်တာ အရသာရှိတယ်။',
   },
   '13': {
-    burmesePhonetic: 'ဖီး-ချိုင်း',
+    burmesePhonetic: 'ဖိ',
+    tone: 'Falling Tone (အသံနိမ့်ကျ)',
+    explanation: 'မိမိထက် အသက်ကြီးသောအစ်ကို သို့မဟုတ် အစ်မကို ချစ်ခင်လေးစားစွာ ခေါ်ဆိုခြင်း။',
+    exampleThai: 'พี่ช่วยหน่อยครับ',
+    exampleBurmese: 'အစ်ကို/အစ်မ ကူညီပေးပါဦးခင်ဗျာ။',
+  },
+  '14': {
+    burmesePhonetic: 'နော(င်)',
+    tone: 'High Tone (အသံမြင့်)',
+    explanation: 'မိမိထက် ငယ်ရွယ်သော ညီ၊ ညီမ၊ မောင် သို့မဟုတ် နှမကို ခေါ်ဆိုခြင်း။',
+    exampleThai: 'น้องกำลังทำการบ้าน',
+    exampleBurmese: 'ညီ/ညီမ အိမ်စာလုပ်နေပါတယ်။',
+  },
+  '15': {
+    burmesePhonetic: 'ဖိ-ချိုင်း',
     tone: 'Falling + Mid',
     explanation: 'မိမိထက် အသက်ကြီးသော အစ်ကိုအရင်း သို့မဟုတ် အစ်ကိုတစ်ယောက်လို ရင်းနှီးသူ။',
     exampleThai: 'พี่ชายทำงานที่กรุงเทพฯ',
     exampleBurmese: 'အစ်ကိုက ဘန်ကောက်မှာ အလုပ်လုပ်တယ်။',
   },
-  '14': {
-    burmesePhonetic: 'ဖီး-ဆာဝ်',
+  '16': {
+    burmesePhonetic: 'ဖိ-ဆာဝ်(ဝ်)',
     tone: 'Falling + Rising',
     explanation: 'မိမိထက် အသက်ကြီးသော အစ်မအရင်းကို ခေါ်ဆိုသော စကားလုံးဖြစ်သည်။',
     exampleThai: 'พี่สาวสวยมาก',
     exampleBurmese: 'အစ်မက အရမ်းလှပါတယ်။',
   },
-  '15': {
-    burmesePhonetic: 'နောင်း-ချိုင်း',
+  '17': {
+    burmesePhonetic: 'နော(င်)-ချိုင်း',
     tone: 'High + Mid',
     explanation: 'မိမိထက် ငယ်သော ညီ သို့မဟုတ် မောင်ကို ရည်ညွှန်းသည်။',
     exampleThai: 'น้องชายเรียนหนังสือ',
     exampleBurmese: 'ညီလေး ကျောင်းတက်နေတယ်။',
   },
-  '16': {
-    burmesePhonetic: 'နောင်း-ဆာဝ်',
+  '18': {
+    burmesePhonetic: 'နော(င်)-ဆာဝ်(ဝ်)',
     tone: 'High + Rising',
     explanation: 'မိမိထက် ငယ်သော ညီမ သို့မဟုတ် နှမကို ရည်ညွှန်းသည်။',
     exampleThai: 'น้องสาวน่ารัก',
     exampleBurmese: 'ညီမလေးက ချစ်စရာကောင်းတယ်။',
   },
-  '17': {
+  '19': {
     burmesePhonetic: 'ပူ',
     tone: 'Low Tone (အသံနိမ့်)',
     explanation: 'ဖခင်၏ ဖခင်ဖြစ်သော အဖိုးအရင်းကို ခေါ်ဆိုခြင်းဖြစ်သည်။',
     exampleThai: 'ปู่แข็งแรงมาก',
     exampleBurmese: 'အဖိုး ကျန်းမာရေး အရမ်းကောင်းတယ်။',
   },
-  '18': {
-    burmesePhonetic: 'ယာ',
+  '20': {
+    burmesePhonetic: 'ယား',
     tone: 'Falling Tone (အသံနိမ့်ကျ)',
     explanation: 'ဖခင်၏ မိခင်ဖြစ်သော အဖွားအရင်းကို ခေါ်ဆိုခြင်းဖြစ်သည်။',
     exampleThai: 'ย่าเล่านิทานให้ฟัง',
     exampleBurmese: 'အဖွားက ပုံပြင်ပြောပြတယ်။',
   },
-  '19': {
-    burmesePhonetic: 'တာ',
-    tone: 'Mid Tone (အလယ်သံ)',
-    explanation: 'မိခင်၏ ဖခင်ဖြစ်သော အဖိုးကို ခေါ်ဆိုခြင်း (မျက်လုံးကိုလည်း ตา ဟုခေါ်သည်)။',
-    exampleThai: 'ตาไปวัด',
-    exampleBurmese: 'အဖိုး ဘုန်းကြီးကျောင်းသွားတယ်။',
-  },
-  '20': {
-    burmesePhonetic: 'ယိုင်း',
-    tone: 'Mid Tone (အလယ်သံ)',
-    explanation: 'မိခင်၏ မိခင်ဖြစ်သော အဖွားအရင်းကို ခေါ်ဆိုခြင်းဖြစ်သည်။',
-    exampleThai: 'ยายทำขนม',
-    exampleBurmese: 'အဖွား မုန့်လုပ်နေတယ်။',
-  },
   '21': {
-    burmesePhonetic: 'သလတ်',
+    burmesePhonetic: 'တလာ(တ်)',
     tone: 'Low + Low Tone',
     explanation: 'အစားအသောက်၊ ဟင်းသီးဟင်းရွက်နှင့် လူသုံးကုန်များ ရောင်းချရာ အရပ်။',
     exampleThai: 'ไปซื้อของที่ตลาด',
@@ -310,35 +310,35 @@ const METADATA_100: Record<
     exampleBurmese: 'လမ်းဆုံမှာ မီးနီပြနေတယ်။',
   },
   '41': {
-    burmesePhonetic: 'ခေါဝ်',
-    tone: 'Falling Tone',
+    burmesePhonetic: 'ခေါက်(ဝ်)',
+    tone: 'Falling Tone (အသံနိမ့်ကျ)',
     explanation: 'အဓိက အစားအစာဖြစ်သော ထမင်း သို့မဟုတ် စပါးဆန်။',
     exampleThai: 'กินข้าวด้วยกัน',
     exampleBurmese: 'ထမင်း အတူတူ စားကြမယ်။',
   },
   '42': {
-    burmesePhonetic: 'ခေါဝ်-နီယို့',
+    burmesePhonetic: 'ခေါက်(ဝ်)နီယို့',
     tone: 'Falling + Rising',
     explanation: 'ထိုင်းအရှေ့မြောက်နှင့် မြောက်ပိုင်းတွင် စားသုံးသော စေးကပ်သည့် ကောက်ညှင်း။',
     exampleThai: 'กินส้มตำกับข้าวเหนียว',
     exampleBurmese: 'သင်္ဘောသီးထောင်းကို ကောက်ညှင်းနဲ့ စားမယ်။',
   },
   '43': {
-    burmesePhonetic: 'ခေါဝ်-မန်-ကိုင်',
+    burmesePhonetic: 'ခေါက်(ဝ်)မန်(န်)ကိုင်',
     tone: 'Falling + Mid + Low',
     explanation: 'ကြက်ပြုတ်ရည်ဖြင့် ချက်ထားသော နာမည်ကျော် ကြက်ဆီထမင်း။',
     exampleThai: 'ข้าวมันไก่จานพิเศษ',
     exampleBurmese: 'ကြက်ဆီထမင်း အထူးပွဲ တစ်ပွဲ။',
   },
   '44': {
-    burmesePhonetic: 'ဆုမ်း-တမ်',
+    burmesePhonetic: 'စုန့်(မ်)တမ်(မ်)',
     tone: 'Falling + Mid',
     explanation: 'ငရုတ်သီး၊ သံပရာ၊ ငါးငံပြာရည်တို့ဖြင့် ထောင်းထားသော ထိုင်းသင်္ဘောသီးထောင်း။',
     exampleThai: 'ส้มตำไทยไม่เผ็ด',
     exampleBurmese: 'ထိုင်းသင်္ဘောသီးထောင်း အစပ်မထည့်ပါနဲ့။',
   },
   '45': {
-    burmesePhonetic: 'တုမ်း-ယမ်',
+    burmesePhonetic: 'တုန့်(မ်)ယမ်(မ်)',
     tone: 'Falling + Mid',
     explanation: 'စပါးလင်၊ ပဒဲကော၊ သံပရာရည်တို့ဖြင့် ချဉ်စပ်ချက်ထားသော ကမ္ဘာကျော်ဟင်းချို။',
     exampleThai: 'ต้มยำกุ้งน้ำใส',
@@ -485,15 +485,15 @@ const METADATA_100: Record<
     exampleBurmese: 'ဆယ် ဘတ်။',
   },
   '66': {
-    burmesePhonetic: 'ဆုဝါး',
-    tone: 'Falling Tone',
+    burmesePhonetic: 'စွတ်အာ့',
+    tone: 'Falling Tone (အသံနိမ့်ကျ)',
     explanation: 'ကိုယ်ခန္ဓာ အပေါ်ပိုင်းတွင် ဝတ်ဆင်သော အင်္ကျီအမျိုးမျိုး။',
     exampleThai: 'ซื้อเสื้อตัวใหม่',
     exampleBurmese: 'အင်္ကျီအသစ် တစ်ထည် ဝယ်မယ်။',
   },
   '67': {
-    burmesePhonetic: 'ကန်-ကန်',
-    tone: 'Mid + Mid',
+    burmesePhonetic: 'ကန်(င်)ကိန်(င်)',
+    tone: 'Mid + Mid Tone (အလယ်သံ)',
     explanation: 'အောက်ပိုင်းတွင် ဝတ်ဆင်သော ဘောင်းဘီရှည်၊ ဘောင်းဘီတို။',
     exampleThai: 'กางเกงยีนส์',
     exampleBurmese: 'ဂျင်းဘောင်းဘီ။',
@@ -734,31 +734,32 @@ const METADATA_100: Record<
 /**
  * Maps all 100 entries of VOCABULARY_LIST into rich ThaiNoun objects
  * for full compatibility with Flashcards, Quizzes, and Vocab views.
+ * VOCABULARY_LIST is the single authoritative source of truth for:
+ * 1. thai script
+ * 2. slash phonetic notation (/.../)
+ * 3. myanmarReading with hyphenated-asats in parentheses
+ * 4. burmeseMeaning
  */
 export const THAI_NOUNS: ThaiNoun[] = VOCABULARY_LIST.map((vocab) => {
-  const meta = METADATA_100[vocab.id] || {
-    burmesePhonetic: vocab.myanmarReading || vocab.thai,
-    tone: 'Standard',
-    explanation: vocab.myanmar,
-    exampleThai: vocab.thai,
-    exampleBurmese: vocab.myanmar,
-  };
+  const meta = METADATA_100[vocab.id];
 
-  const reading = vocab.myanmarReading || meta.burmesePhonetic;
+  // Authoritative textbook reading and clean slash phonetic notation from VOCABULARY_LIST
+  const reading = vocab.myanmarReading;
+  const phonetic = vocab.phonetic;
 
   return {
     id: parseInt(vocab.id, 10),
     thai: vocab.thai,
-    phonetics: vocab.phonetic,
-    phonetic: vocab.phonetic,
+    phonetics: phonetic,
+    phonetic: phonetic,
     burmesePhonetic: reading,
     myanmarReading: reading,
     burmeseMeaning: vocab.myanmar,
     category: vocab.category,
     categoryNameBurmese: CATEGORY_NAMES[vocab.category] || vocab.category,
-    tone: meta.tone,
-    meaningExplanation: meta.explanation,
-    exampleThai: meta.exampleThai,
-    exampleBurmese: meta.exampleBurmese,
+    tone: meta?.tone || 'Standard Tone',
+    meaningExplanation: meta?.explanation || vocab.myanmar,
+    exampleThai: meta?.exampleThai || vocab.thai,
+    exampleBurmese: meta?.exampleBurmese || vocab.myanmar,
   };
 });

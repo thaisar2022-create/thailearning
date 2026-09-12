@@ -108,7 +108,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div className="flex items-center justify-between gap-2">
             <div className="flex-1">
               <h1 className="font-padauk font-bold text-[20px] text-white leading-snug">
-                ထိုင်းစကားပြော အခြေခံစာလုံး ၁၀၀
+                ထိုင်းစကားပြော အခြေခံစာလုံး ၁၀၀ လုံး
               </h1>
               <p className="text-[12px] text-[#e7b3ff] mt-0.5 font-medium font-padauk">
                 နေ့စဉ် ပုံမှန်လေ့ကျင့်မှု မှတ်တမ်း
@@ -154,7 +154,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#F2D705]" />
               <span className="font-padauk text-white text-[12px]">
-                ကျက်မှတ်ပြီး: <strong className="font-mono text-[#F2D705]">{masteredCount}</strong>/{totalCount}
+                ကျက်မှတ်ပြီး: <strong className="font-mono text-[#F2D705]">{masteredCount}</strong> / ၁၀၀ လုံး
               </span>
             </div>
             <div className="font-padauk text-[#e7b3ff] text-[11px]">
@@ -225,14 +225,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   </button>
 
                   <div className="flex flex-col">
-                    <div className="flex items-baseline gap-1.5 flex-wrap">
+                    <div className="flex items-baseline gap-1.5 flex-wrap min-h-[26px]">
                       <span lang="th" className="font-prompt font-bold text-[16px] text-[#1e1b19] leading-tight">
                         {drill.thai}
                       </span>
-                      <span className="font-mono text-[12px] text-[#4a3e4c] font-semibold">
+                      <span className="text-gray-600 dark:text-gray-300 font-mono text-xs" lang="en">
                         {drill.phonetic || drill.phonetics}
                       </span>
-                      <span lang="my" className="font-padauk text-[12px] text-[#524354]">
+                      <span lang="my" className="text-gray-500 text-sm font-padauk">
                         ({drill.myanmarReading || drill.burmesePhonetic})
                       </span>
                     </div>

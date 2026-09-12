@@ -6,6 +6,8 @@ export const QUIZ_QUESTIONS: QuizItem[] = [
     wordId: 1,
     thaiWord: 'ไก่',
     phonetics: '/kày/',
+    phonetic: '/kày/',
+    myanmarReading: 'ကိုင်',
     categoryTag: 'အသားနှင့် ပင်လယ်စာ',
     questionBurmese: '၁။ "ไก่" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
     options: [
@@ -14,13 +16,15 @@ export const QUIZ_QUESTIONS: QuizItem[] = [
       { key: 'ဂ', text: 'အမဲသား', isCorrect: false },
       { key: 'ဃ', text: 'ငါး', isCorrect: false },
     ],
-    explanation: 'ကြက် / ကြက်သား ဖြစ်ပါသည်။ ဝက်သားမှာ หมူ (မူး) ဖြစ်ပြီး ငါးမှာ ปลา (ပလာ) ဖြစ်သည်။',
+    explanation: 'ကြက် / ကြက်သား ဖြစ်ပါသည်။ ဝက်သားမှာ หมู (မူ) ဖြစ်ပြီး ငါးမှာ ปลา (ပလာ) ဖြစ်သည်။',
   },
   {
     id: 2,
     wordId: 2,
     thaiWord: 'หมู',
     phonetics: '/mǔu/',
+    phonetic: '/mǔu/',
+    myanmarReading: 'မူ',
     categoryTag: 'အသားနှင့် ပင်လယ်စာ',
     questionBurmese: '၂။ "หมู" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
     options: [
@@ -29,13 +33,15 @@ export const QUIZ_QUESTIONS: QuizItem[] = [
       { key: 'ဂ', text: 'ပုစွန်', isCorrect: false },
       { key: 'ဃ', text: 'ဂဏန်း', isCorrect: false },
     ],
-    explanation: 'ဝက်သား ဖြစ်ပါသည်။ ပုစွန်မှာ กุ้ง (ကုန်) ဖြစ်ပြီး ဘဲသားမှာ เป็ด (ပတ်) ဖြစ်သည်။',
+    explanation: 'ဝက်သား ဖြစ်ပါသည်။ ပုစွန်မှာ กุ้ง (ကုန်း(င်)) ဖြစ်ပြီး ဘဲသားမှာ เป็ด (ပတ်(တ်)) ဖြစ်သည်။',
   },
   {
     id: 3,
     wordId: 3,
     thaiWord: 'กุ้ง',
     phonetics: '/kûŋ/',
+    phonetic: '/kûŋ/',
+    myanmarReading: 'ကုန်း(င်)',
     categoryTag: 'အသားနှင့် ပင်လယ်စာ',
     questionBurmese: '၃။ "กุ้ง" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
     options: [
@@ -51,6 +57,8 @@ export const QUIZ_QUESTIONS: QuizItem[] = [
     wordId: 11,
     thaiWord: 'ข้าว',
     phonetics: '/khâaw/',
+    phonetic: '/khâaw/',
+    myanmarReading: 'ခေါက်(ဝ်)',
     categoryTag: 'အစားအစာ နာမ်',
     questionBurmese: '၄။ "ข้าว" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
     options: [
@@ -66,6 +74,8 @@ export const QUIZ_QUESTIONS: QuizItem[] = [
     wordId: 13,
     thaiWord: 'ข้าวผัด',
     phonetics: '/khâaw-phàt/',
+    phonetic: '/khâaw-phàt/',
+    myanmarReading: 'ခေါက်(ဝ်)ဖတ်(တ်)',
     categoryTag: 'အစားအစာ နာမ်',
     questionBurmese: '၅။ "ข้าวผัด" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
     options: [
@@ -81,6 +91,8 @@ export const QUIZ_QUESTIONS: QuizItem[] = [
     wordId: 21,
     thaiWord: 'พริก',
     phonetics: '/phrík/',
+    phonetic: '/phrík/',
+    myanmarReading: 'ဖရစ်(က်)',
     categoryTag: 'ဟင်းသီးဟင်းရွက် နာမ်',
     questionBurmese: '၆။ "พริก" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
     options: [
@@ -96,6 +108,8 @@ export const QUIZ_QUESTIONS: QuizItem[] = [
     wordId: 14,
     thaiWord: 'ข้าวเหนียว',
     phonetics: '/khâaw-nǐaw/',
+    phonetic: '/khâaw-nǐaw/',
+    myanmarReading: 'ခေါက်(ဝ်)နီယို့',
     categoryTag: 'အစားအသောက် နာမ်',
     questionBurmese: '၇။ "ข้าวเหนียว" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
     options: [
@@ -111,6 +125,8 @@ export const QUIZ_QUESTIONS: QuizItem[] = [
     wordId: 31,
     thaiWord: 'น้ำ',
     phonetics: '/náam/',
+    phonetic: '/náam/',
+    myanmarReading: 'နမ်(မ်)',
     categoryTag: 'သောက်စရာ နာမ်',
     questionBurmese: '၈။ "น้ำ" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
     options: [
@@ -126,6 +142,8 @@ export const QUIZ_QUESTIONS: QuizItem[] = [
     wordId: 51,
     thaiWord: 'ตลาด',
     phonetics: '/ta-làat/',
+    phonetic: '/ta-làat/',
+    myanmarReading: 'တလာ(တ်)',
     categoryTag: 'နေရာ နာမ်',
     questionBurmese: '၉။ "ตลาด" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
     options: [
@@ -141,6 +159,8 @@ export const QUIZ_QUESTIONS: QuizItem[] = [
     wordId: 41,
     thaiWord: 'มะม่วง',
     phonetics: '/má-mûaŋ/',
+    phonetic: '/má-mûaŋ/',
+    myanmarReading: 'မမွတ်(င်)',
     categoryTag: 'သစ်သီး နာမ်',
     questionBurmese: '၁၀။ "มะม่วง" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
     options: [

@@ -111,7 +111,10 @@ export const QuizView: React.FC = () => {
         <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#f6d9ff]/70 border border-[#2c0043]/15 text-[#2c0043] text-xs font-semibold">
           <span className="w-2 h-2 rounded-full bg-[#4b006e]" />
           <span className="font-padauk text-[12px] leading-none">
-            အပိုင်း (က) <span className="font-prompt text-[11px] font-bold">PART A : Q1-Q10</span>
+            အပိုင်း (က) <span className="font-prompt text-[11px] font-bold">Q1-Q10</span>
+          </span>
+          <span className="font-padauk text-[11px] text-[#4b006e] font-bold ml-1">
+            (ဝေါဟာရ ၁၀၀ လုံး)
           </span>
         </div>
 
@@ -134,7 +137,7 @@ export const QuizView: React.FC = () => {
       <div className="flex flex-col gap-1.5">
         <div className="flex items-center justify-between text-xs">
           <span className="font-padauk text-[15px] font-bold text-[#2c0043]">
-            မေးခွန်း <span className="font-padauk text-[#4b006e] text-[18px]">{toBurmeseNumber(currentQuestionIndex + 1)}</span> / {toBurmeseNumber(totalQuestions)}
+            မေးခွန်း <span className="font-padauk text-[#4b006e] text-[18px]">{toBurmeseNumber(currentQuestionIndex + 1)}</span> / {toBurmeseNumber(totalQuestions)} (၁၀၀ လုံးလေ့ကျင့်ခန်း)
           </span>
           <span className="font-mono text-[12px] text-[#7f7381] font-semibold">
             {progressPercent}% <span className="font-padauk text-[11px]">ပြီးစီး</span>
@@ -215,15 +218,24 @@ export const QuizView: React.FC = () => {
 
         {/* Prompt */}
         <div className="flex flex-col gap-1">
-          <h2 lang="my" className="font-padauk font-bold text-[19px] text-[#1e1b19] leading-snug">
-            {toBurmeseNumber(currentQ.id)}။ "
-            <span lang="th" className="text-[#2c0043] font-prompt font-bold">{currentQ.thaiWord}</span>"
-            ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။
-          </h2>
-          <div className="flex items-center gap-2 mt-1">
-            <span className="font-mono text-xs bg-[#f4ece8] text-[#4d4450] px-2.5 py-0.5 rounded-full font-medium">
-              အသံထွက်: {currentQ.phonetics}
-            </span>
+          <div className="min-h-[54px] flex items-start">
+            <h2 lang="my" className="font-padauk font-bold text-[19px] text-[#1e1b19] leading-snug">
+              {toBurmeseNumber(currentQ.id)}။ "
+              <span lang="th" className="text-[#2c0043] font-prompt font-bold">{currentQ.thaiWord}</span>"
+              ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။
+            </h2>
+          </div>
+          <div className="min-h-[30px] flex items-center gap-2 mt-1 flex-wrap">
+            <div className="flex items-center gap-1.5 bg-[#f4ece8] px-2.5 py-1 rounded-full">
+              <span className="text-gray-600 dark:text-gray-300 font-mono" lang="en">
+                {currentQ.phonetic || currentQ.phonetics}
+              </span>
+              {currentQ.myanmarReading && (
+                <span className="text-gray-500 text-sm font-padauk" lang="my">
+                  ({currentQ.myanmarReading})
+                </span>
+              )}
+            </div>
             <span lang="my" className="font-padauk text-[11px] text-[#D97706] bg-[#D97706]/10 px-2 py-0.5 rounded-full font-semibold">
               • {currentQ.categoryTag}
             </span>
@@ -265,7 +277,7 @@ export const QuizView: React.FC = () => {
                   >
                     {option.key}
                   </span>
-                  <span className="font-padauk font-semibold text-[15px]">{option.text}</span>
+                  <span lang="my" className="font-padauk font-semibold text-[15px]">{option.text}</span>
                 </div>
 
                 <div
@@ -289,7 +301,7 @@ export const QuizView: React.FC = () => {
               <span className="text-[16px]">💡</span>
               <span className="font-padauk font-bold text-xs">ရှင်းလင်းချက် မှတ်စုတို</span>
             </div>
-            <p className="font-padauk text-[13px] text-[#1e1b19] leading-relaxed">
+            <p lang="my" className="font-padauk text-[13px] text-[#1e1b19] leading-relaxed">
               {currentQ.explanation}
             </p>
           </div>

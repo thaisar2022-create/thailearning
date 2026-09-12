@@ -30,7 +30,7 @@ export const Header: FC<HeaderProps> = ({ currentTab, streak }) => {
         />
         <div className="flex flex-col">
           <span className="font-padauk font-bold text-[15px] leading-tight text-[#2c0043]">
-            {currentTab === 'flashcards' ? 'ထိုင်းနာမ် ၁၀၀' : 'ထိုင်းအခြေခံနာမ် ၁၀၀'}
+            {currentTab === 'flashcards' ? 'ထိုင်းနာမ် ၁၀၀ လုံး' : 'ထိုင်းအခြေခံနာမ် ၁၀၀ လုံး'}
           </span>
           <span className="text-[10px] tracking-wider text-[#4d4450] uppercase font-semibold font-prompt">
             {getSubTitle()}

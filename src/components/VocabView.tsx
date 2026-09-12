@@ -108,7 +108,7 @@ export const VocabView: React.FC<VocabViewProps> = ({
                 : 'bg-[#f4ece8] text-[#4d4450] hover:bg-[#eee7e3]'
             }`}
           >
-            အားလုံး ({THAI_NOUNS.length})
+            အားလုံး (၁၀၀ လုံး)
           </button>
           {CATEGORIES.map((cat) => (
             <button
@@ -124,7 +124,7 @@ export const VocabView: React.FC<VocabViewProps> = ({
                 className="w-2 h-2 rounded-full shrink-0"
                 style={{ backgroundColor: cat.tagColor }}
               />
-              <span>{cat.burmese}</span>
+              <span lang="my">{cat.burmese}</span>
             </button>
           ))}
         </div>
@@ -133,7 +133,7 @@ export const VocabView: React.FC<VocabViewProps> = ({
       {/* Results Count Bar matching Screenshot */}
       <div className="flex items-center justify-between text-xs font-padauk px-1 text-[#7f7381]">
         <span>
-          တွေ့ရှိသည့် ဝေါဟာရ: <strong className="text-[#1e1b19] font-mono font-bold text-[13px]">{filteredNouns.length}</strong> လုံး
+          ဝေါဟာရ စုစုပေါင်း: <strong className="text-[#1e1b19] font-padauk font-bold text-[13px]">၁၀၀ လုံး</strong> (တွေ့ရှိ: <strong className="text-[#1e1b19] font-mono font-bold text-[13px]">{filteredNouns.length}</strong> လုံး)
         </span>
         <span>
           ကျက်မှတ်ပြီး: <strong className="text-[#16A34A] font-mono font-bold text-[13px]">{masteredWords.size}</strong>
@@ -171,20 +171,17 @@ export const VocabView: React.FC<VocabViewProps> = ({
               {/* Middle: Content Section */}
               <div className="flex-1 min-w-0 flex flex-col justify-center gap-0.5">
                 {/* Top row: Thai Word with lang="th", clean slash Phonetic and Myanmar Reading with lang="my" */}
-                <div className="flex items-baseline gap-1.5 flex-wrap">
+                <div className="flex items-baseline gap-1.5 flex-wrap min-h-[28px]">
                   <span
                     lang="th"
                     className="font-prompt font-bold text-[18px] text-[#1e1b19] leading-tight"
                   >
                     {noun.thai}
                   </span>
-                  <span className="font-mono text-xs text-[#4a3e4c] font-semibold">
+                  <span className="text-gray-600 dark:text-gray-300 font-mono" lang="en">
                     {noun.phonetic || noun.phonetics}
                   </span>
-                  <span
-                    lang="my"
-                    className="font-padauk text-xs text-[#524354] font-medium"
-                  >
+                  <span className="text-gray-500 text-sm font-padauk" lang="my">
                     ({noun.myanmarReading || noun.burmesePhonetic})
                   </span>
                 </div>

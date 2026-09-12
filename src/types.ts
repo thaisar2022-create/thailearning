@@ -78,6 +78,8 @@ export interface QuizItem {
   wordId: number;
   thaiWord: string;
   phonetics: string;
+  phonetic?: string;
+  myanmarReading?: string;
   categoryTag: string;
   questionBurmese: string;
   options: QuizOption[];

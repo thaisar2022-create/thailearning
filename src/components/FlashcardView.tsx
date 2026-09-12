@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { CATEGORIES } from '../data/categories';
 import { THAI_NOUNS } from '../data/nouns';
 import { CategoryId, ThaiNoun } from '../types';
@@ -76,6 +76,31 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
     );
   };
 
+  const playAudio = (text: string) => {
+    handlePlaySound(text);
+  };
+
+  // Keyboard support: Spacebar or Enter to flip, Arrow keys to navigate
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+      if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        setIsFlipped((prev) => !prev);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        handleNext();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        handlePrev();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [filteredNouns.length]);
+
   const handleToggleMastery = () => {
     onToggleMastered(currentNoun.id);
   };
@@ -129,7 +154,7 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
                 }`}
               >
                 <span className="w-2.5 h-2.5 rounded-full bg-[#4b006e]" />
-                <span>အားလုံး (All Categories)</span>
+                <span>အားလုံး (၁၀၀ လုံး)</span>
               </button>
               {CATEGORIES.map((cat) => (
                 <button
@@ -149,7 +174,7 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
                     className="w-2.5 h-2.5 rounded-full"
                     style={{ backgroundColor: cat.tagColor }}
                   />
-                  <span>{cat.burmese}</span>
+                  <span lang="my">{cat.burmese}</span>
                 </button>
               ))}
             </div>
@@ -160,9 +185,9 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
         <div className="flex items-center gap-2">
           <div className="flex flex-col items-end">
             <span className="font-padauk text-[14px] text-[#4b006e] font-bold">
-              {toBurmeseNumber(safeIndex + 1)} / {toBurmeseNumber(filteredNouns.length)}
+              {toBurmeseNumber(safeIndex + 1)} / {selectedCat === 'all' ? '၁၀၀ လုံး' : `${toBurmeseNumber(filteredNouns.length)} လုံး`}
             </span>
-            <span className="font-padauk text-[10px] text-[#7f7381]">ကတ်ပြား</span>
+            <span className="font-padauk text-[10px] text-[#7f7381]">စုစုပေါင်း ၁၀၀ လုံး</span>
           </div>
           <button
             id="flashcard-quick-audio-btn"
@@ -187,146 +212,149 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
         />
       </div>
 
-      {/* Touch 3D Flashcard Container */}
+      {/* Touch 3D Flashcard Container with strict min-h-[420px] and CLS stability */}
       <div
         id="flashcard-deck-card"
+        role="button"
+        tabIndex={0}
+        aria-label="Flashcard: Press Spacebar or Enter to flip"
         onClick={() => setIsFlipped(!isFlipped)}
-        className="w-full h-[360px] [perspective:1400px] cursor-pointer select-none"
+        onKeyDown={(e) => {
+          if (e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+            setIsFlipped(!isFlipped);
+          }
+        }}
+        className="w-full min-h-[420px] perspective-1000 cursor-pointer select-none outline-none focus-visible:ring-2 focus-visible:ring-amber-300 rounded-2xl relative"
       >
         <div
-          className={`relative w-full h-full duration-600 transition-transform preserve-3d rounded-2xl shadow-lg ${
-            isFlipped ? 'rotate-y-180' : ''
-          }`}
+          className="relative w-full h-full min-h-[420px] transition-transform duration-500 ease-in-out preserve-3d rounded-2xl"
+          style={{
+            transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+            WebkitTransform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+            transformStyle: 'preserve-3d',
+            WebkitTransformStyle: 'preserve-3d',
+          }}
         >
-          {/* FRONT SIDE (Thai Focus) */}
-          <div className="absolute inset-0 w-full h-full backface-hidden rounded-2xl p-5 flex flex-col justify-between overflow-hidden bg-gradient-to-br from-[#2c0043] via-[#4b006e] to-[#68278a] text-white border-2 border-[#F2D705]/40 shadow-xl">
-            {/* Top row */}
-            <div className="flex items-center justify-between z-10">
+          {/* 1. FRONT SIDE (Default state - !isFlipped: Burmese Active Recall) */}
+          <div
+            className={`absolute inset-0 w-full h-full min-h-[420px] backface-hidden rounded-2xl p-6 flex flex-col justify-between items-center bg-gradient-to-br from-[#2c0043] via-[#4b006e] to-[#68278a] text-white border-2 border-[#F2D705]/40 shadow-xl ${
+              isFlipped ? 'pointer-events-none' : 'pointer-events-auto'
+            }`}
+            style={{
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
+              transform: 'rotateY(0deg)',
+              WebkitTransform: 'rotateY(0deg)',
+            }}
+          >
+            {/* Top row: Category tag at top-left, word index badge at top-right */}
+            <div className="w-full flex items-center justify-between z-10">
               <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/30 border border-[#F2D705]/40">
                 <span className="w-2 h-2 rounded-full bg-[#F2D705] animate-pulse" />
-                <span className="font-padauk text-[11px] text-[#F2D705] font-semibold">
+                <span lang="my" className="font-padauk text-[12px] text-[#F2D705] font-semibold">
                   {currentNoun.categoryNameBurmese}
                 </span>
               </div>
-              <button
-                id="front-audio-button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handlePlaySound(currentNoun.thai);
-                }}
-                className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#F2D705]/20 hover:bg-[#F2D705]/30 border border-[#F2D705]/50 text-[#F2D705] active:scale-95 transition-all cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-[16px]">volume_up</span>
-                <span className="font-prompt text-[11px] text-white font-medium">အသံ</span>
-              </button>
-            </div>
-
-            {/* Center: Thai Word & Phonetics */}
-            <div className="flex flex-col items-center justify-center text-center my-auto z-10">
-              <span className="font-prompt text-[10px] tracking-widest uppercase text-[#F2D705] font-bold bg-black/35 px-2.5 py-0.5 rounded-full border border-[#F2D705]/30 mb-2">
-                Thai Noun #{String(currentNoun.id).padStart(3, '0')}
+              <span className="font-prompt text-[11px] tracking-wider uppercase text-[#F2D705] font-bold bg-black/35 px-3 py-1 rounded-full border border-[#F2D705]/30">
+                THAI NOUN #{String(currentNoun.id).padStart(3, '0')}
               </span>
-              <h1
-                lang="th"
-                className="font-prompt text-[34px] text-white font-bold tracking-wide drop-shadow-md leading-tight"
-              >
-                {currentNoun.thai}
-              </h1>
-              <div className="mt-2.5 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/40 border border-[#F2D705]/40 shadow-inner">
-                <span className="font-mono text-[13px] text-white/95 font-semibold">
-                  {currentNoun.phonetic || currentNoun.phonetics}
-                </span>
-                <span className="text-[#F2D705] text-xs">·</span>
-                <span
-                  lang="my"
-                  className="font-padauk text-[14px] text-[#F2D705] font-bold"
-                >
-                  ({currentNoun.myanmarReading || currentNoun.burmesePhonetic})
-                </span>
-              </div>
             </div>
 
-            {/* Bottom Row */}
-            <div className="flex items-center justify-between pt-2 border-t border-white/10 z-10">
-              <span className="font-mono text-[11px] text-white/80">{currentNoun.tone}</span>
-              <div className="flex items-center gap-1.5 text-[#F2D705]">
-                <span className="material-symbols-outlined text-[16px] animate-spin">sync</span>
-                <span lang="my" className="font-padauk text-[12px] font-semibold">လှန်၍ ကြည့်ပါ</span>
-              </div>
+            {/* Center: ONLY Myanmar meaning in prominent, large, well-spaced Burmese typography */}
+            <div className="flex-1 flex flex-col items-center justify-center text-center my-auto w-full py-6">
+              <h2
+                className="text-3xl sm:text-4xl md:text-5xl font-bold text-center text-amber-300 leading-snug px-4 font-padauk drop-shadow-md"
+                lang="my"
+              >
+                {currentNoun.burmeseMeaning}
+              </h2>
+            </div>
+
+            {/* Bottom Hint */}
+            <div className="w-full flex items-center justify-center pt-3 border-t border-white/10 z-10">
+              <span className="text-gray-400 text-sm flex items-center gap-1 font-padauk">
+                🔄 ကတ်ကိုနှိပ်၍ ထိုင်းစကားလုံး ကြည့်ပါ
+              </span>
             </div>
           </div>
 
-          {/* BACK SIDE (Burmese Translation & Explanation) */}
-          <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-2xl p-4 flex flex-col justify-between bg-white text-[#1e1b19] shadow-xl border-2 border-[#F2D705]">
-            {/* Header */}
-            <div className="flex items-center justify-between border-b border-[#EBE5DA] pb-2">
-              <div className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[#F2D705] text-[20px]">
-                  translate
-                </span>
-                <span
-                  lang="my"
-                  className="font-padauk text-[17px] text-[#2c0043] font-bold"
-                >
-                  {currentNoun.burmeseMeaning}
+          {/* 2. BACK SIDE (Revealed state - isFlipped: Thai Vocabulary, Book Phonetics, Audio & Tone) */}
+          <div
+            className={`absolute inset-0 w-full h-full min-h-[420px] backface-hidden rounded-2xl p-6 flex flex-col justify-between items-center bg-gradient-to-br from-[#1d002e] via-[#2d0046] to-[#4c006f] text-white border-2 border-[#F2D705] shadow-2xl ${
+              !isFlipped ? 'pointer-events-none' : 'pointer-events-auto'
+            }`}
+            style={{
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
+              transform: 'rotateY(180deg)',
+              WebkitTransform: 'rotateY(180deg)',
+            }}
+          >
+            {/* Top row */}
+            <div className="w-full flex items-center justify-between z-10 border-b border-white/10 pb-2.5">
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/30 border border-[#F2D705]/40">
+                <span className="w-2 h-2 rounded-full bg-[#F2D705]" />
+                <span lang="my" className="font-padauk text-[12px] text-[#F2D705] font-semibold">
+                  {currentNoun.categoryNameBurmese}
                 </span>
               </div>
-              <span className="font-mono text-[11px] bg-[#f6d9ff] text-[#2c0043] border border-[#2c0043]/20 px-2 py-0.5 rounded font-bold">
+              <span className="font-mono text-[11px] bg-[#f6d9ff] text-[#2c0043] border border-[#2c0043]/20 px-2.5 py-0.5 rounded-full font-bold">
                 #{String(currentNoun.id).padStart(3, '0')}
               </span>
             </div>
 
-            {/* Meaning & Details */}
-            <div className="flex flex-col gap-2 my-auto">
-              <div className="bg-[#F4F0E8] rounded-lg p-2.5 border-l-4 border-l-[#F2D705]">
-                <span
-                  lang="my"
-                  className="font-prompt text-[10px] uppercase font-bold text-[#4b006e]"
-                >
-                  ရှင်းလင်းချက် (Meaning)
+            {/* Center: Extra-large Thai, Phonetic reading, Tone badge & Audio Button */}
+            <div className="flex-1 flex flex-col items-center justify-center text-center my-auto w-full py-4">
+              <h2
+                className="text-4xl sm:text-5xl font-bold text-white mb-3 font-prompt tracking-wide drop-shadow-md"
+                lang="th"
+              >
+                {currentNoun.thai}
+              </h2>
+
+              <div className="bg-purple-950/60 px-4 py-2 rounded-full border border-purple-400/30 text-base font-mono text-purple-200 mb-4 inline-flex items-center gap-2 shadow-inner">
+                <span>{currentNoun.phonetic || currentNoun.phonetics}</span>{' '}
+                <span lang="my" className="font-padauk text-purple-200">
+                  ({currentNoun.myanmarReading || currentNoun.burmesePhonetic})
                 </span>
-                <p
-                  lang="my"
-                  className="font-padauk text-[13px] text-[#1e1b19] leading-relaxed mt-1"
-                >
-                  {currentNoun.meaningExplanation}
-                </p>
               </div>
 
-              {/* Example sentence */}
-              <div className="bg-[#FDFBF7] rounded-lg p-2 border border-[#EBE5DA] flex items-center justify-between">
-                <div className="flex flex-col pr-2">
-                  <span
-                    lang="th"
-                    className="font-prompt text-[13px] text-[#2c0043] font-bold"
-                  >
-                    {currentNoun.exampleThai}
-                  </span>
-                  <span
-                    lang="my"
-                    className="font-padauk text-[12px] text-[#4d4450]"
-                  >
-                    {currentNoun.exampleBurmese}
-                  </span>
-                </div>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handlePlaySound(currentNoun.exampleThai);
-                  }}
-                  className="w-7 h-7 rounded-full bg-[#f6d9ff] text-[#4b006e] flex items-center justify-center shrink-0 active:scale-90 transition-transform cursor-pointer"
-                  title="Play example audio"
-                >
-                  <span className="material-symbols-outlined text-[15px]">volume_up</span>
-                </button>
+              {/* Tone Badge */}
+              <div className="px-3.5 py-1 rounded-full bg-black/40 border border-purple-400/30 text-xs font-mono text-purple-200 mb-4">
+                {currentNoun.tone}
               </div>
+
+              {/* Audio Pronounce Button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  playAudio(currentNoun.thai);
+                }}
+                aria-label="Listen to Thai pronunciation"
+                className="p-3 bg-purple-600 hover:bg-purple-500 active:scale-95 rounded-full text-white shadow-lg transition flex items-center gap-2 cursor-pointer font-padauk font-semibold border border-purple-400/30"
+              >
+                <span>🔊 အသံနားထောင်မည်</span>
+              </button>
+
+              {/* Compact example context */}
+              {currentNoun.exampleThai && (
+                <div className="mt-3 px-3.5 py-1.5 rounded-xl bg-black/30 border border-white/10 text-center max-w-xs">
+                  <p lang="th" className="text-xs text-amber-200 font-prompt font-medium">
+                    {currentNoun.exampleThai}
+                  </p>
+                  <p lang="my" className="text-[11px] text-gray-300 font-padauk mt-0.5">
+                    {currentNoun.exampleBurmese}
+                  </p>
+                </div>
+              )}
             </div>
 
-            {/* Back Footer */}
-            <div className="flex items-center justify-between pt-1.5 border-t border-[#EBE5DA] text-[#7f7381]">
-              <span className="font-padauk text-[11px]">🔄 ပြန်လှည့်ရန် နှိပ်ပါ</span>
-              <span className="material-symbols-outlined text-[#F2D705] text-[16px]">
-                touch_app
+            {/* Bottom Row */}
+            <div className="w-full flex items-center justify-between pt-2 border-t border-white/10 z-10 text-xs">
+              <span className="font-padauk text-gray-400">🔄 ပြန်လှည့်ရန် နှိပ်ပါ</span>
+              <span className="font-padauk text-amber-300 font-medium">
+                {currentNoun.burmeseMeaning}
               </span>
             </div>
           </div>
@@ -350,7 +378,9 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
           className="flex-1 h-12 rounded-xl bg-[#F2D705] hover:bg-[#e0c700] text-[#2c0043] font-bold flex items-center justify-center gap-2 shadow-md active:scale-95 border border-[#e0c700] ring-2 ring-[#F2D705]/40 transition-all cursor-pointer"
         >
           <span className="material-symbols-outlined text-[20px]">flip</span>
-          <span className="font-padauk text-[14px] font-bold">ကတ်လှန်မည် (Flip)</span>
+          <span className="font-padauk text-[14px] font-bold">
+            {isFlipped ? 'ကတ်ပြန်လှန်မည် (Flip Back)' : 'ကတ်လှန်မည် (Flip)'}
+          </span>
         </button>
 
         <button
@@ -409,12 +439,12 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
       <div className="bg-white rounded-xl p-3 border border-[#EBE5DA] flex items-center justify-between shadow-2xs">
         <div className="flex items-center gap-2.5">
           <span className="material-symbols-outlined text-[#F2D705] text-[22px]">
-            tips_and_updates
+            psychology
           </span>
           <div className="flex flex-col">
-            <span className="font-padauk text-[13px] text-[#2c0043] font-bold">အကြံပြုချက်</span>
+            <span className="font-padauk text-[13px] text-[#2c0043] font-bold">Active Recall လေ့ကျင့်နည်း</span>
             <span className="font-padauk text-[11px] text-[#4d4450]">
-              ကတ်မလှန်မီ အသံကို ကိုယ်တိုင်ရွတ်ဖတ်ပါ
+              မြန်မာစကားလုံးကို ကြည့်ပြီး ထိုင်းစကားလုံးကို အရင်စဉ်းစားပါ (Space / Enter ဖြင့် ကတ်လှန်နိုင်ပါသည်)
             </span>
           </div>
         </div>
