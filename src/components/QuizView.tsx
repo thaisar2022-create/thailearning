@@ -15,20 +15,21 @@ const toBurmeseNumber = (n: number): string => {
 };
 
 export const QuizView: React.FC = () => {
-  // Start at Question 7 by default to match the exact uploaded screenshot, or allow navigation!
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(6); // index 6 is Q7
-  const [selectedAnswers, setSelectedAnswers] = useState<{ [questionId: number]: string }>({
-    1: 'ခ',
-    2: 'က',
-    3: 'ဂ',
-    4: 'ဂ',
-    5: 'က',
-    6: 'ခ',
-    7: 'ခ', // pre-selected to match screenshot, but fully interactive
-  });
+  // Always default to Question 1 (index 0) with fresh empty state
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
+  const [selectedAnswers, setSelectedAnswers] = useState<{ [questionId: number]: string }>({});
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
-  const [secondsElapsed, setSecondsElapsed] = useState(15);
+  const [secondsElapsed, setSecondsElapsed] = useState<number>(0);
   const [showCelebration, setShowCelebration] = useState(false);
+
+  // Clear any existing localStorage state on mount to ensure fresh start at Question 1
+  useEffect(() => {
+    try {
+      localStorage.removeItem('thai_quiz_state');
+    } catch {
+      // ignore
+    }
+  }, []);
 
   // Live timer simulation
   useEffect(() => {
@@ -61,7 +62,7 @@ export const QuizView: React.FC = () => {
     }
   });
 
-  const percentScore = answeredCount > 0 ? Math.round((correctAnswersCount / answeredCount) * 100) : 100;
+  const percentScore = answeredCount > 0 ? Math.round((correctAnswersCount / answeredCount) * 100) : 0;
   const progressPercent = Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100);
 
   const handleSelectOption = (key: 'က' | 'ခ' | 'ဂ' | 'ဃ') => {
@@ -95,10 +96,15 @@ export const QuizView: React.FC = () => {
   };
 
   const handleResetQuiz = () => {
-    setSelectedAnswers({});
     setCurrentQuestionIndex(0);
+    setSelectedAnswers({});
     setSecondsElapsed(0);
     setShowCelebration(false);
+    try {
+      localStorage.removeItem('thai_quiz_state');
+    } catch {
+      // ignore
+    }
   };
 
   const selectedKeyForCurrent = selectedAnswers[currentQ.id];
@@ -106,14 +112,14 @@ export const QuizView: React.FC = () => {
   return (
     <div className="flex-1 px-4 pt-3 pb-24 flex flex-col gap-3">
       {/* Quiz Assessment Top Status Bar */}
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex items-center justify-between gap-1.5 flex-wrap">
         {/* Part Badge */}
-        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#f6d9ff]/70 border border-[#2c0043]/15 text-[#2c0043] text-xs font-semibold">
+        <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#f6d9ff]/70 border border-[#2c0043]/15 text-[#2c0043] text-xs font-semibold">
           <span className="w-2 h-2 rounded-full bg-[#4b006e]" />
           <span className="font-padauk text-[12px] leading-none">
             အပိုင်း (က) <span className="font-prompt text-[11px] font-bold">Q1-Q10</span>
           </span>
-          <span className="font-padauk text-[11px] text-[#4b006e] font-bold ml-1">
+          <span className="font-padauk text-[11px] text-[#4b006e] font-bold ml-0.5">
             (ဝေါဟာရ ၁၀၀ လုံး)
           </span>
         </div>
@@ -128,9 +134,20 @@ export const QuizView: React.FC = () => {
         <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-[#fce01b]/25 border border-[#fce01b] text-[#2c0043] text-xs font-padauk font-bold">
           <span className="text-[14px]">🏆</span>
           <span>
-            ရမှတ်: <span className="font-mono">{toBurmeseNumber(correctAnswersCount)}/{toBurmeseNumber(answeredCount || 1)}</span>
+            ရမှတ်: <span className="font-padauk font-bold">{toBurmeseNumber(correctAnswersCount)}/{toBurmeseNumber(answeredCount)}</span>
           </span>
         </div>
+
+        {/* Reset / Restart Quiz Button */}
+        <button
+          onClick={handleResetQuiz}
+          title="အစမှ ပြန်ဖြေမည်"
+          aria-label="အစမှ ပြန်ဖြေမည်"
+          className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-[#f4ece8] hover:bg-[#eee7e3] border border-[#EBE5DA] text-xs font-padauk text-[#4d4450] transition-all cursor-pointer active:scale-95"
+        >
+          <span className="text-[12px]">🔄</span>
+          <span className="font-padauk text-[11px] font-bold text-[#2c0043]">အစမှ ပြန်ဖြေမည်</span>
+        </button>
       </div>
 
       {/* Progress Info Header */}
@@ -139,15 +156,15 @@ export const QuizView: React.FC = () => {
           <span className="font-padauk text-[15px] font-bold text-[#2c0043]">
             မေးခွန်း <span className="font-padauk text-[#4b006e] text-[18px]">{toBurmeseNumber(currentQuestionIndex + 1)}</span> / {toBurmeseNumber(totalQuestions)} (၁၀၀ လုံးလေ့ကျင့်ခန်း)
           </span>
-          <span className="font-mono text-[12px] text-[#7f7381] font-semibold">
-            {progressPercent}% <span className="font-padauk text-[11px]">ပြီးစီး</span>
+          <span className="font-padauk text-[12px] text-[#7f7381] font-semibold">
+            {toBurmeseNumber(progressPercent)}% ပြီးစီး
           </span>
         </div>
 
         {/* Progress Bar */}
         <div className="w-full bg-[#f4ece8] h-2 rounded-full overflow-hidden border border-[#EBE5DA]">
           <div
-            className="h-full bg-[#4b006e] rounded-full transition-all duration-300"
+            className="h-full bg-gradient-to-r from-[#2c0043] to-[#4b006e] rounded-full transition-all duration-300"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
@@ -177,18 +194,19 @@ export const QuizView: React.FC = () => {
 
             let badgeStyle = 'bg-[#f4ece8] text-[#7f7381] hover:bg-[#eee7e3]';
             if (isCurrent) {
-              badgeStyle = 'bg-[#2c0043] text-white font-bold ring-2 ring-[#FFDE34]';
+              badgeStyle = 'bg-[#2c0043] text-white font-bold ring-2 ring-[#FFDE34] shadow-xs scale-105';
             } else if (isAnswered) {
-              badgeStyle = 'bg-[#FFDE34] text-[#2c0043] font-bold shadow-xs';
+              badgeStyle = 'bg-[#FFDE34] text-[#2c0043] font-bold shadow-xs hover:bg-[#fae250]';
             }
 
             return (
               <button
                 key={q.id}
                 onClick={() => setCurrentQuestionIndex(idx)}
-                className={`w-7 h-7 rounded-lg flex items-center justify-center font-mono text-[12px] transition-all cursor-pointer ${badgeStyle}`}
+                aria-label={`မေးခွန်း ${idx + 1}`}
+                className={`w-7 h-7 rounded-lg flex items-center justify-center font-padauk font-bold text-[13px] transition-all cursor-pointer active:scale-95 ${badgeStyle}`}
               >
-                {q.id}
+                {toBurmeseNumber(q.id)}
               </button>
             );
           })}
@@ -332,8 +350,8 @@ export const QuizView: React.FC = () => {
       {/* Bottom Performance Evaluation Banner */}
       <div className="bg-white rounded-xl p-3 border border-[#EBE5DA] shadow-xs flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-full bg-[#FFDE34] text-[#2c0043] border border-[#FFDE34] flex flex-col items-center justify-center font-mono font-bold text-xs shrink-0 shadow-xs">
-            {percentScore}%
+          <div className="w-11 h-11 rounded-full bg-[#FFDE34] text-[#2c0043] border border-[#FFDE34] flex flex-col items-center justify-center font-padauk font-bold text-xs shrink-0 shadow-xs">
+            {toBurmeseNumber(percentScore)}%
           </div>
           <div className="flex flex-col">
             <span className="font-padauk font-bold text-[13px] text-[#2c0043] leading-tight">
@@ -347,7 +365,7 @@ export const QuizView: React.FC = () => {
 
         <div className="text-right">
           <span className="font-padauk text-[10px] text-[#7f7381] block">ပျမ်းမျှတုံ့ပြန်ချိန်</span>
-          <span className="font-mono text-xs font-bold text-[#2c0043]">
+          <span className="font-padauk text-xs font-bold text-[#2c0043]">
             ၄.၂ စက္ကန့်/ပုဒ်
           </span>
         </div>
@@ -364,7 +382,7 @@ export const QuizView: React.FC = () => {
               ဉာဏ်စမ်းအောင်မြင်စွာ ဖြေဆိုပြီးပါပြီ။
             </h3>
             <p className="font-padauk text-xs text-[#4d4450]">
-              သင့်ရမှတ်: {toBurmeseNumber(correctAnswersCount)} / {toBurmeseNumber(totalQuestions)} (ရမှတ် {percentScore}%)
+              သင့်ရမှတ်: {toBurmeseNumber(correctAnswersCount)} / {toBurmeseNumber(totalQuestions)} (ရမှတ် {toBurmeseNumber(percentScore)}%)
             </p>
 
             <div className="w-full bg-[#F4F0E8] rounded-xl p-3 text-xs font-padauk text-[#2c0043] flex justify-around">

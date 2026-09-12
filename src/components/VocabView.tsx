@@ -15,6 +15,17 @@ interface ParsedTone {
   burmese: string;
 }
 
+const toBurmeseNumber = (n: number): string => {
+  const burmeseDigits = ['၀', '၁', '၂', '၃', '၄', '၅', '၆', '၇', '၈', '၉'];
+  return String(n)
+    .split('')
+    .map((char) => {
+      const digit = parseInt(char, 10);
+      return isNaN(digit) ? char : burmeseDigits[digit];
+    })
+    .join('');
+};
+
 function parseTone(toneStr: string): ParsedTone {
   if (!toneStr) return { english: 'Tone', burmese: '' };
 
@@ -104,7 +115,7 @@ export const VocabView: React.FC<VocabViewProps> = ({
             onClick={() => setSelectedCategory('all')}
             className={`px-3.5 py-1.5 rounded-full text-xs font-padauk whitespace-nowrap transition-all cursor-pointer ${
               selectedCategory === 'all'
-                ? 'bg-[#2c0043] text-[#F2D705] font-bold shadow-xs'
+                ? 'bg-[#2c0043] text-[#FFDE34] font-bold shadow-xs'
                 : 'bg-[#f4ece8] text-[#4d4450] hover:bg-[#eee7e3]'
             }`}
           >
@@ -116,7 +127,7 @@ export const VocabView: React.FC<VocabViewProps> = ({
               onClick={() => setSelectedCategory(cat.id)}
               className={`px-3.5 py-1.5 rounded-full text-xs font-padauk whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
                 selectedCategory === cat.id
-                  ? 'bg-[#2c0043] text-white font-bold shadow-xs'
+                  ? 'bg-[#2c0043] text-[#FFDE34] font-bold shadow-xs'
                   : 'bg-[#f4ece8] text-[#4d4450] hover:bg-[#eee7e3]'
               }`}
             >
@@ -133,10 +144,13 @@ export const VocabView: React.FC<VocabViewProps> = ({
       {/* Results Count Bar matching Screenshot */}
       <div className="flex items-center justify-between text-xs font-padauk px-1 text-[#7f7381]">
         <span>
-          ဝေါဟာရ စုစုပေါင်း: <strong className="text-[#1e1b19] font-padauk font-bold text-[13px]">၁၀၀ လုံး</strong> (တွေ့ရှိ: <strong className="text-[#1e1b19] font-mono font-bold text-[13px]">{filteredNouns.length}</strong> လုံး)
+          ဝေါဟာရ စုစုပေါင်း: <strong className="text-[#1e1b19] font-padauk font-bold text-[13px]">၁၀၀ လုံး</strong>
+          {(selectedCategory !== 'all' || searchQuery.trim().length > 0) && (
+            <> (တွေ့ရှိ: <strong className="text-[#1e1b19] font-padauk font-bold text-[13px]">{toBurmeseNumber(filteredNouns.length)}</strong> လုံး)</>
+          )}
         </span>
         <span>
-          ကျက်မှတ်ပြီး: <strong className="text-[#16A34A] font-mono font-bold text-[13px]">{masteredWords.size}</strong>
+          ကျက်မှတ်ပြီး: <strong className="text-[#4b006e] font-padauk font-bold text-[13px]">{toBurmeseNumber(masteredWords.size)}</strong>
         </span>
       </div>
 
@@ -158,7 +172,7 @@ export const VocabView: React.FC<VocabViewProps> = ({
                 onClick={() => handlePlaySound(noun)}
                 className={`w-11 h-11 rounded-full flex items-center justify-center shrink-0 active:scale-95 transition-all cursor-pointer ${
                   isPlaying
-                    ? 'bg-[#F2D705] text-[#1A0028] shadow-xs animate-pulse'
+                    ? 'bg-[#FFDE34] text-[#1A0028] shadow-xs animate-pulse'
                     : 'bg-[#f4ece8] text-[#2c0043] hover:bg-[#ebd0f5]'
                 }`}
                 title="Play pronunciation"
@@ -195,17 +209,23 @@ export const VocabView: React.FC<VocabViewProps> = ({
                     {noun.burmeseMeaning}
                   </span>
 
-                  {/* Tone badge with English and Burmese description */}
+                  {/* Tone badge with Burmese tone description prominent */}
                   <div className="bg-[#f4ece8] border border-[#e8ded7] px-2 py-0.5 rounded-lg flex flex-col items-start leading-tight shrink-0">
-                    <span className="font-prompt text-[10px] text-[#4a3e4c] font-semibold leading-tight">
-                      {toneInfo.english}
-                    </span>
-                    {toneInfo.burmese && (
-                      <span
-                        lang="my"
-                        className="font-padauk text-[9px] text-[#524354] leading-tight"
-                      >
-                        {toneInfo.burmese}
+                    {toneInfo.burmese ? (
+                      <>
+                        <span
+                          lang="my"
+                          className="font-padauk text-[10px] text-[#4b006e] font-bold leading-tight"
+                        >
+                          {toneInfo.burmese.replace(/[()]/g, '')}
+                        </span>
+                        <span className="font-prompt text-[9px] text-[#7f7381] font-medium leading-tight">
+                          {toneInfo.english}
+                        </span>
+                      </>
+                    ) : (
+                      <span className="font-prompt text-[10px] text-[#4b006e] font-semibold leading-tight">
+                        {toneInfo.english}
                       </span>
                     )}
                   </div>
@@ -231,7 +251,7 @@ export const VocabView: React.FC<VocabViewProps> = ({
                 >
                   <span
                     className={`material-symbols-outlined text-[22px] transition-colors ${
-                      isMastered ? 'text-[#16A34A]' : 'text-[#8c7e8e] hover:text-[#16A34A]'
+                      isMastered ? 'text-[#4b006e]' : 'text-[#8c7e8e] hover:text-[#4b006e]'
                     }`}
                   >
                     check_circle
