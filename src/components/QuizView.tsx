@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { QUIZ_QUESTIONS } from '../data/quiz';
+import { QUIZ_QUESTIONS, QuizQuestion } from '../data/quiz';
 import { playThaiSpeech } from '../utils/audio';
+
+const OPTION_KEYS = ['က', 'ခ', 'ဂ', 'ဃ'] as const;
 
 // Helper to format Burmese numbers
 const toBurmeseNumber = (n: number): string => {
@@ -17,7 +19,7 @@ const toBurmeseNumber = (n: number): string => {
 export const QuizView: React.FC = () => {
   // Always default to Question 1 (index 0) with fresh empty state
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
-  const [selectedAnswers, setSelectedAnswers] = useState<{ [questionId: number]: string }>({});
+  const [selectedAnswers, setSelectedAnswers] = useState<{ [questionId: number]: number }>({});
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [secondsElapsed, setSecondsElapsed] = useState<number>(0);
   const [showCelebration, setShowCelebration] = useState(false);
@@ -45,18 +47,17 @@ export const QuizView: React.FC = () => {
     return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
 
-  const currentQ = QUIZ_QUESTIONS[currentQuestionIndex];
+  const currentQ: QuizQuestion = QUIZ_QUESTIONS[currentQuestionIndex] || QUIZ_QUESTIONS[0];
   const totalQuestions = QUIZ_QUESTIONS.length;
 
   // Calculate score
   let correctAnswersCount = 0;
   let answeredCount = 0;
   QUIZ_QUESTIONS.forEach((q) => {
-    const userSelectedKey = selectedAnswers[q.id];
-    if (userSelectedKey) {
+    const userSelectedOptionIdx = selectedAnswers[q.id];
+    if (userSelectedOptionIdx !== undefined) {
       answeredCount++;
-      const opt = q.options.find((o) => o.key === userSelectedKey);
-      if (opt && opt.isCorrect) {
+      if (userSelectedOptionIdx === q.correctAnswerIndex) {
         correctAnswersCount++;
       }
     }
@@ -65,10 +66,10 @@ export const QuizView: React.FC = () => {
   const percentScore = answeredCount > 0 ? Math.round((correctAnswersCount / answeredCount) * 100) : 0;
   const progressPercent = Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100);
 
-  const handleSelectOption = (key: 'က' | 'ခ' | 'ဂ' | 'ဃ') => {
+  const handleSelectOption = (optionIndex: number) => {
     setSelectedAnswers((prev) => ({
       ...prev,
-      [currentQ.id]: key,
+      [currentQ.id]: optionIndex,
     }));
   };
 
@@ -107,23 +108,12 @@ export const QuizView: React.FC = () => {
     }
   };
 
-  const selectedKeyForCurrent = selectedAnswers[currentQ.id];
+  const selectedOptionIdxForCurrent = selectedAnswers[currentQ.id];
 
   return (
     <div className="flex-1 px-4 pt-3 pb-24 flex flex-col gap-3">
       {/* Quiz Assessment Top Status Bar */}
       <div className="flex items-center justify-between gap-1.5 flex-wrap">
-        {/* Part Badge */}
-        <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#f6d9ff]/70 border border-[#2c0043]/15 text-[#2c0043] text-xs font-semibold">
-          <span className="w-2 h-2 rounded-full bg-[#4b006e]" />
-          <span className="font-padauk text-[12px] leading-none">
-            အပိုင်း (က) <span className="font-prompt text-[11px] font-bold">Q1-Q10</span>
-          </span>
-          <span className="font-padauk text-[11px] text-[#4b006e] font-bold ml-0.5">
-            (ဝေါဟာရ ၁၀၀ လုံး)
-          </span>
-        </div>
-
         {/* Live Timer */}
         <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-[#f4ece8] border border-[#EBE5DA] text-xs font-mono text-[#4d4450]">
           <span className="material-symbols-outlined text-[15px]">schedule</span>
@@ -154,7 +144,7 @@ export const QuizView: React.FC = () => {
       <div className="flex flex-col gap-1.5">
         <div className="flex items-center justify-between text-xs">
           <span className="font-padauk text-[15px] font-bold text-[#2c0043]">
-            မေးခွန်း <span className="font-padauk text-[#4b006e] text-[18px]">{toBurmeseNumber(currentQuestionIndex + 1)}</span> / {toBurmeseNumber(totalQuestions)} (၁၀၀ လုံးလေ့ကျင့်ခန်း)
+            မေးခွန်း <span className="font-padauk text-[#4b006e] text-[18px]">{toBurmeseNumber(currentQuestionIndex + 1)}</span> / {toBurmeseNumber(totalQuestions)}
           </span>
           <span className="font-padauk text-[12px] text-[#7f7381] font-semibold">
             {toBurmeseNumber(progressPercent)}% ပြီးစီး
@@ -170,12 +160,12 @@ export const QuizView: React.FC = () => {
         </div>
       </div>
 
-      {/* Question Number Strip (1 to 10) */}
+      {/* Question Number Strip (1 to 30) */}
       <div className="bg-white rounded-2xl p-2.5 border border-[#EBE5DA] shadow-2xs flex flex-col gap-2">
         <div className="flex items-center justify-between text-[11px] text-[#4d4450]">
           <div className="flex items-center gap-1.5">
             <span className="material-symbols-outlined text-[16px]">menu</span>
-            <span className="font-padauk font-semibold">မေးခွန်း ၁၀ စာရင်း</span>
+            <span className="font-padauk font-semibold">မေးခွန်း {toBurmeseNumber(totalQuestions)} စာရင်း</span>
           </div>
           <div className="flex items-center gap-2 font-padauk text-[10px]">
             <span className="flex items-center gap-1">
@@ -187,10 +177,10 @@ export const QuizView: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-between gap-1">
+        <div className="flex items-center gap-1.5 overflow-x-auto py-1 scrollbar-none">
           {QUIZ_QUESTIONS.map((q, idx) => {
             const isCurrent = idx === currentQuestionIndex;
-            const isAnswered = !!selectedAnswers[q.id];
+            const isAnswered = selectedAnswers[q.id] !== undefined;
 
             let badgeStyle = 'bg-[#f4ece8] text-[#7f7381] hover:bg-[#eee7e3]';
             if (isCurrent) {
@@ -204,7 +194,7 @@ export const QuizView: React.FC = () => {
                 key={q.id}
                 onClick={() => setCurrentQuestionIndex(idx)}
                 aria-label={`မေးခွန်း ${idx + 1}`}
-                className={`w-7 h-7 rounded-lg flex items-center justify-center font-padauk font-bold text-[13px] transition-all cursor-pointer active:scale-95 ${badgeStyle}`}
+                className={`w-7 h-7 shrink-0 rounded-lg flex items-center justify-center font-padauk font-bold text-[13px] transition-all cursor-pointer active:scale-95 ${badgeStyle}`}
               >
                 {toBurmeseNumber(q.id)}
               </button>
@@ -246,7 +236,7 @@ export const QuizView: React.FC = () => {
           <div className="min-h-[30px] flex items-center gap-2 mt-1 flex-wrap">
             <div className="flex items-center gap-1.5 bg-[#f4ece8] px-2.5 py-1 rounded-full">
               <span className="text-gray-600 dark:text-gray-300 font-mono" lang="en">
-                {currentQ.phonetic || currentQ.phonetics}
+                {currentQ.phonetic}
               </span>
               {currentQ.myanmarReading && (
                 <span className="text-gray-500 text-sm font-padauk" lang="my">
@@ -255,16 +245,17 @@ export const QuizView: React.FC = () => {
               )}
             </div>
             <span lang="my" className="font-padauk text-[11px] text-[#D97706] bg-[#D97706]/10 px-2 py-0.5 rounded-full font-semibold">
-              • {currentQ.categoryTag}
+              • {currentQ.category}
             </span>
           </div>
         </div>
 
         {/* Multiple Choice Options */}
         <div className="flex flex-col gap-2 pt-1">
-          {currentQ.options.map((option) => {
-            const isSelected = selectedKeyForCurrent === option.key;
-            const isCorrectAnswer = option.isCorrect;
+          {currentQ.options.map((optionText, optIdx) => {
+            const isSelected = selectedOptionIdxForCurrent === optIdx;
+            const isCorrectAnswer = optIdx === currentQ.correctAnswerIndex;
+            const optionKey = OPTION_KEYS[optIdx] || String(optIdx + 1);
 
             let borderStyle = 'border-[#EBE5DA] bg-white hover:bg-[#faf2ee]';
             let circleStyle = 'border-[#d0c2d1] text-[#7f7381]';
@@ -284,18 +275,18 @@ export const QuizView: React.FC = () => {
 
             return (
               <button
-                key={option.key}
-                id={`quiz-option-${option.key}`}
-                onClick={() => handleSelectOption(option.key)}
+                key={optIdx}
+                id={`quiz-option-${optIdx}`}
+                onClick={() => handleSelectOption(optIdx)}
                 className={`w-full p-3 rounded-xl border-2 flex items-center justify-between text-left transition-all cursor-pointer active:scale-98 ${borderStyle}`}
               >
                 <div className="flex items-center gap-3">
                   <span
                     className={`w-7 h-7 rounded-lg flex items-center justify-center font-padauk font-bold text-sm border ${circleStyle}`}
                   >
-                    {option.key}
+                    {optionKey}
                   </span>
-                  <span lang="my" className="font-padauk font-semibold text-[15px]">{option.text}</span>
+                  <span lang="my" className="font-padauk font-semibold text-[15px]">{optionText}</span>
                 </div>
 
                 <div
@@ -313,7 +304,7 @@ export const QuizView: React.FC = () => {
         </div>
 
         {/* Explanation Note Card */}
-        {selectedKeyForCurrent && (
+        {selectedOptionIdxForCurrent !== undefined && (
           <div className="bg-[#fffbeb] border border-[#fce01b]/80 rounded-xl p-3 flex flex-col gap-1 animate-fadeIn">
             <div className="flex items-center gap-1.5 text-[#b45309]">
               <span className="text-[16px]">💡</span>
@@ -355,10 +346,10 @@ export const QuizView: React.FC = () => {
           </div>
           <div className="flex flex-col">
             <span className="font-padauk font-bold text-[13px] text-[#2c0043] leading-tight">
-              ထူးချွန်အဆင့် (A+)
+              {percentScore >= 80 ? 'ထူးချွန်အဆင့် (A+)' : percentScore >= 50 ? 'ကောင်းမွန်သောအဆင့် (B)' : 'လေ့ကျင့်ရန်လိုအပ်ဆဲ'}
             </span>
             <span className="font-padauk text-[11px] text-[#4d4450]">
-              {toBurmeseNumber(correctAnswersCount)} ပုဒ်ဖြေပြီး {toBurmeseNumber(correctAnswersCount)} ပုဒ်စလုံး မှန်ကန်
+              {toBurmeseNumber(answeredCount)} ပုဒ်ဖြေပြီး {toBurmeseNumber(correctAnswersCount)} ပုဒ် မှန်ကန်
             </span>
           </div>
         </div>
@@ -392,7 +383,9 @@ export const QuizView: React.FC = () => {
               </div>
               <div>
                 <span className="block text-[#7f7381]">အဆင့်အတန်း</span>
-                <strong className="text-[#b45309] text-sm">ထူးချွန် (A+)</strong>
+                <strong className="text-[#b45309] text-sm">
+                  {percentScore >= 80 ? 'ထူးချွန် (A+)' : percentScore >= 50 ? 'ကောင်းမွန် (B)' : 'ကြိုးစားဆဲ'}
+                </strong>
               </div>
             </div>
 

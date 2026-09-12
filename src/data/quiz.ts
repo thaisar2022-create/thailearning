@@ -1,174 +1,357 @@
-import { QuizItem } from '../types';
+export interface QuizQuestion {
+  id: number;
+  question: string;
+  thaiWord: string;
+  phonetic: string;
+  myanmarReading: string;
+  category: string;
+  options: string[];
+  correctAnswerIndex: number;
+  explanation: string;
+}
 
-export const QUIZ_QUESTIONS: QuizItem[] = [
+export const QUIZ_QUESTIONS: QuizQuestion[] = [
+  // 1-5: နာမ်စားများနှင့် အခြေခံ
   {
     id: 1,
-    wordId: 1,
-    thaiWord: 'ไก่',
-    phonetics: '/kày/',
-    phonetic: '/kày/',
-    myanmarReading: 'ကိုင်',
-    categoryTag: 'အသားနှင့် ပင်လယ်စာ',
-    questionBurmese: '၁။ "ไก่" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
-    options: [
-      { key: 'က', text: 'ဝက်သား', isCorrect: false },
-      { key: 'ခ', text: 'ကြက် / ကြက်သား', isCorrect: true },
-      { key: 'ဂ', text: 'အမဲသား', isCorrect: false },
-      { key: 'ဃ', text: 'ငါး', isCorrect: false },
-    ],
-    explanation: 'ကြက် / ကြက်သား ဖြစ်ပါသည်။ ဝက်သားမှာ หมู (မူ) ဖြစ်ပြီး ငါးမှာ ปลา (ပလာ) ဖြစ်သည်။',
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "ผม",
+    phonetic: "/phom/",
+    myanmarReading: "ဖုန်(မ်)",
+    category: "နာမ်စားနှင့် အခြေခံ",
+    options: ["ကျွန်တော် (အမျိုးသားသုံး)", "ကျွန်မ (အမျိုးသမီးသုံး)", "သင် / ခင်ဗျား", "သူ / သူမ"],
+    correctAnswerIndex: 0,
+    explanation: "ผม (/phom/) သည် အမျိုးသားသုံး 'ကျွန်တော်' ဖြစ်ပါသည်။"
   },
   {
     id: 2,
-    wordId: 2,
-    thaiWord: 'หมู',
-    phonetics: '/mǔu/',
-    phonetic: '/mǔu/',
-    myanmarReading: 'မူ',
-    categoryTag: 'အသားနှင့် ပင်လယ်စာ',
-    questionBurmese: '၂။ "หมู" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
-    options: [
-      { key: 'က', text: 'ဝက် / ဝက်သား', isCorrect: true },
-      { key: 'ခ', text: 'ဘဲသား', isCorrect: false },
-      { key: 'ဂ', text: 'ပုစွန်', isCorrect: false },
-      { key: 'ဃ', text: 'ဂဏန်း', isCorrect: false },
-    ],
-    explanation: 'ဝက်သား ဖြစ်ပါသည်။ ပုစွန်မှာ กุ้ง (ကုန်း(င်)) ဖြစ်ပြီး ဘဲသားမှာ เป็ด (ပတ်(တ်)) ဖြစ်သည်။',
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "ดิฉัน",
+    phonetic: "/dì-chán/",
+    myanmarReading: "ဒီချန်(န်)",
+    category: "နာမ်စားနှင့် အခြေခံ",
+    options: ["ငါ / ကျုပ်", "ကျွန်မ (အမျိုးသမီးသုံး)", "သူတို့", "လူကြီးမင်း"],
+    correctAnswerIndex: 1,
+    explanation: "ดิฉัน (/dì-chán/) သည် ယဉ်ကျေးသောအမျိုးသမီးသုံး 'ကျွန်မ' ဖြစ်ပါသည်။"
   },
   {
     id: 3,
-    wordId: 3,
-    thaiWord: 'กุ้ง',
-    phonetics: '/kûŋ/',
-    phonetic: '/kûŋ/',
-    myanmarReading: 'ကုန်း(င်)',
-    categoryTag: 'အသားနှင့် ပင်လယ်စာ',
-    questionBurmese: '၃။ "กุ้ง" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
-    options: [
-      { key: 'က', text: 'ပြည်ကြီးငါး', isCorrect: false },
-      { key: 'ခ', text: 'ခရု / ဂုံး', isCorrect: false },
-      { key: 'ဂ', text: 'ပုစွန်', isCorrect: true },
-      { key: 'ဃ', text: 'ငါးသေတ္တာ', isCorrect: false },
-    ],
-    explanation: 'ပုစွန် ဖြစ်ပါသည်။ ပြည်ကြီးငါးမှာ ปลาหมึก ဖြစ်ပြီး ဂုံးမှာ หอย ဖြစ်သည်။',
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "คุณ",
+    phonetic: "/khun/",
+    myanmarReading: "ခူ(န်)",
+    category: "နာမ်စားနှင့် အခြေခံ",
+    options: ["အဖေ", "သင် / မင်း / ရှင် / ခင်ဗျား", "ဆရာ", "သူဌေး"],
+    correctAnswerIndex: 1,
+    explanation: "คุณ (/khun/) သည် ယဉ်ကျေးစွာ ခေါ်ဆိုသော 'သင် / ခင်ဗျား / ရှင်' ဖြစ်ပါသည်။"
   },
   {
     id: 4,
-    wordId: 11,
-    thaiWord: 'ข้าว',
-    phonetics: '/khâaw/',
-    phonetic: '/khâaw/',
-    myanmarReading: 'ခေါက်(ဝ်)',
-    categoryTag: 'အစားအစာ နာမ်',
-    questionBurmese: '၄။ "ข้าว" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
-    options: [
-      { key: 'က', text: 'ပေါင်မုန့်', isCorrect: false },
-      { key: 'ခ', text: 'ခေါက်ဆွဲ', isCorrect: false },
-      { key: 'ဂ', text: 'ထမင်း / ဆန်', isCorrect: true },
-      { key: 'ဃ', text: 'ဟင်းချို', isCorrect: false },
-    ],
-    explanation: 'ထမင်း / ဆန် ဖြစ်ပါသည်။ ပေါင်မုန့်မှာ ขนมปัง ဖြစ်ပြီး ခေါက်ဆွဲမှာ ก๋วยเตี๋ยว ဖြစ်သည်။',
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "พวกเรา",
+    phonetic: "/phûak-raw/",
+    myanmarReading: "ဖုဝက်(က်)ရောင်(ဝ်)",
+    category: "နာမ်စားနှင့် အခြေခံ",
+    options: ["သူတို့", "ငါတို့ / ကျွန်ုပ်တို့", "မင်းတို့", "ဆွေမျိုးများ"],
+    correctAnswerIndex: 1,
+    explanation: "พวกเรา (/phûak-raw/) သည် 'ငါတို့ / ကျွန်ုပ်တို့' ဖြစ်ပါသည်။"
   },
   {
     id: 5,
-    wordId: 13,
-    thaiWord: 'ข้าวผัด',
-    phonetics: '/khâaw-phàt/',
-    phonetic: '/khâaw-phàt/',
-    myanmarReading: 'ခေါက်(ဝ်)ဖတ်(တ်)',
-    categoryTag: 'အစားအစာ နာမ်',
-    questionBurmese: '၅။ "ข้าวผัด" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
-    options: [
-      { key: 'က', text: 'ထမင်းကြော်', isCorrect: true },
-      { key: 'ခ', text: 'ထမင်းဖြူ', isCorrect: false },
-      { key: 'ဂ', text: 'ကောက်ညှင်းပေါင်း', isCorrect: false },
-      { key: 'ဃ', text: 'ဆန်ပြုတ်', isCorrect: false },
-    ],
-    explanation: 'ထမင်းကြော် ဖြစ်ပါသည်။ ข้าว (ထမင်း) + ผัด (ကြော်) ပေါင်းစပ်ထားခြင်း ဖြစ်သည်။',
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "ท่าน",
+    phonetic: "/thâan/",
+    myanmarReading: "ထာန့်(န်)",
+    category: "နာမ်စားနှင့် အခြေခံ",
+    options: ["ညီမလေး", "သူငယ်ချင်း", "လူကြီးမင်း / အရှင်သခင်", "ကလေး"],
+    correctAnswerIndex: 2,
+    explanation: "ท่าน (/thâan/) သည် ရိုသေလေးစားစွာ သုံးနှုန်းသော 'လူကြီးမင်း' ဖြစ်ပါသည်။"
   },
+
+  // 6-10: မိသားစုဝင်များ
   {
     id: 6,
-    wordId: 21,
-    thaiWord: 'พริก',
-    phonetics: '/phrík/',
-    phonetic: '/phrík/',
-    myanmarReading: 'ဖရစ်(က်)',
-    categoryTag: 'ဟင်းသီးဟင်းရွက် နာမ်',
-    questionBurmese: '၆။ "พริก" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
-    options: [
-      { key: 'က', text: 'ကြက်သွန်ဖြူ', isCorrect: false },
-      { key: 'ခ', text: 'ငရုတ်သီး', isCorrect: true },
-      { key: 'ဂ', text: 'ချင်း / ဂျင်း', isCorrect: false },
-      { key: 'ဃ', text: 'သံပရာသီး', isCorrect: false },
-    ],
-    explanation: 'ငရုတ်သီး ဖြစ်ပါသည်။ ကြက်သွန်ဖြူမှာ กระเทียม ဖြစ်ပြီး ချင်းမှာ ขิง ဖြစ်သည်။',
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "พ่อ",
+    phonetic: "/phɔ̂ɔ/",
+    myanmarReading: "ဖော့",
+    category: "မိသားစု",
+    options: ["အဖေ", "အမေ", "အစ်ကို", "ဦးလေး"],
+    correctAnswerIndex: 0,
+    explanation: "พ่อ (/phɔ̂ɔ/) သည် 'အဖေ' ဖြစ်ပါသည်။"
   },
   {
     id: 7,
-    wordId: 14,
-    thaiWord: 'ข้าวเหนียว',
-    phonetics: '/khâaw-nǐaw/',
-    phonetic: '/khâaw-nǐaw/',
-    myanmarReading: 'ခေါက်(ဝ်)နီယို့',
-    categoryTag: 'အစားအသောက် နာမ်',
-    questionBurmese: '၇။ "ข้าวเหนียว" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
-    options: [
-      { key: 'က', text: 'ထမင်းကြော်', isCorrect: false },
-      { key: 'ခ', text: 'ကောက်ညှင်းပေါင်း', isCorrect: true },
-      { key: 'ဂ', text: 'ဆန်ပြုတ်', isCorrect: false },
-      { key: 'ဃ', text: 'ထမင်းဖြူ', isCorrect: false },
-    ],
-    explanation: 'ကောက်ညှင်းပေါင်း ဖြစ်ပါသည်။ ထမင်းကြော်မှာ ข้าวผัด ဖြစ်ပြီး ဆန်ပြုတ်မှာ โจ๊ก ဖြစ်သည်။',
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "แม่",
+    phonetic: "/mɛ̂ɛ/",
+    myanmarReading: "မဲ့",
+    category: "မိသားစု",
+    options: ["ဒေါ်လေး", "အမေ", "အဘွား", "အစ်မ"],
+    correctAnswerIndex: 1,
+    explanation: "แม่ (/mɛ̂ɛ/) သည် 'အမေ' ဖြစ်ပါသည်။"
   },
   {
     id: 8,
-    wordId: 31,
-    thaiWord: 'น้ำ',
-    phonetics: '/náam/',
-    phonetic: '/náam/',
-    myanmarReading: 'နမ်(မ်)',
-    categoryTag: 'သောက်စရာ နာမ်',
-    questionBurmese: '၈။ "น้ำ" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
-    options: [
-      { key: 'က', text: 'ရေ', isCorrect: true },
-      { key: 'ခ', text: 'လက်ဖက်ရည်', isCorrect: false },
-      { key: 'ဂ', text: 'ကော်ဖီ', isCorrect: false },
-      { key: 'ဃ', text: 'နို့ရည်', isCorrect: false },
-    ],
-    explanation: 'ရေ ဖြစ်ပါသည်။ လက်ဖက်ရည်မှာ ชา ဖြစ်ပြီး ကော်ဖီမှာ กาแฟ ဖြစ်သည်။',
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "พี่ชาย",
+    phonetic: "/phîi-chaay/",
+    myanmarReading: "ဖိချိုင်း(ယ်)",
+    category: "မိသားစု",
+    options: ["ညီလေး", "အစ်ကို", "အစ်မ", "ဦးလေး"],
+    correctAnswerIndex: 1,
+    explanation: "พี่ชาย (/phîi-chaay/) သည် 'အစ်ကို' ဖြစ်ပါသည်။"
   },
   {
     id: 9,
-    wordId: 51,
-    thaiWord: 'ตลาด',
-    phonetics: '/ta-làat/',
-    phonetic: '/ta-làat/',
-    myanmarReading: 'တလာ(တ်)',
-    categoryTag: 'နေရာ နာမ်',
-    questionBurmese: '၉။ "ตลาด" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
-    options: [
-      { key: 'က', text: 'ဆေးရုံ', isCorrect: false },
-      { key: 'ခ', text: 'ဟိုတယ်', isCorrect: false },
-      { key: 'ဂ', text: 'ဈေး / ဈေးဆိုင်တန်း', isCorrect: true },
-      { key: 'ဃ', text: 'လေဆိပ်', isCorrect: false },
-    ],
-    explanation: 'ဈေး / ဈေးဆိုင်တန်း ဖြစ်ပါသည်။ ဆေးရုံမှာ โรงพยาบาล ဖြစ်ပြီး လေဆိပ်မှာ สนามบิน ဖြစ်သည်။',
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "น้องสาว",
+    phonetic: "/nɔ́ɔŋ-săaw/",
+    myanmarReading: "နော(င်)စောင်(ဝ်)",
+    category: "မိသားစု",
+    options: ["ညီမ / နှမ", "အစ်မကြီး", "အဒေါ်", "မြေးမလေး"],
+    correctAnswerIndex: 0,
+    explanation: "น้องสาว (/nɔ́ɔŋ-săaw/) သည် 'ညီမ / နှမ' ဖြစ်ပါသည်။"
   },
   {
     id: 10,
-    wordId: 41,
-    thaiWord: 'มะม่วง',
-    phonetics: '/má-mûaŋ/',
-    phonetic: '/má-mûaŋ/',
-    myanmarReading: 'မမွတ်(င်)',
-    categoryTag: 'သစ်သီး နာမ်',
-    questionBurmese: '၁၀။ "มะม่วง" ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။',
-    options: [
-      { key: 'က', text: 'ငှက်ပျောသီး', isCorrect: false },
-      { key: 'ခ', text: 'သရက်သီး', isCorrect: true },
-      { key: 'ဂ', text: 'ဖရဲသီး', isCorrect: false },
-      { key: 'ဃ', text: 'ဒူးရင်းသီး', isCorrect: false },
-    ],
-    explanation: 'သရက်သီး ဖြစ်ပါသည်။ ငှက်ပျောသီးမှာ กล้วย ဖြစ်ပြီး ဒူးရင်းသီးမှာ ทุเรียน ဖြစ်သည်။',
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "หลาน",
+    phonetic: "/lăan/",
+    myanmarReading: "လာန်(န်)",
+    category: "မိသားစု",
+    options: ["ဆွေမျိုး", "တူ / တူမ / မြေး", "သူငယ်ချင်း", "အိမ်နီးချင်း"],
+    correctAnswerIndex: 1,
+    explanation: "หลาน (/lăan/) သည် 'တူ / တူမ / မြေး' ဖြစ်ပါသည်။"
   },
+
+  // 11-15: အစားအစာနှင့် သောက်စရာ
+  {
+    id: 11,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "ข้าวเหนียว",
+    phonetic: "/khâaw-nĭaw/",
+    myanmarReading: "ခေါက်(ဝ်)နီယို(ဝ်)",
+    category: "အစားအသောက်",
+    options: ["ထမင်းကြော်", "ကောက်ညှင်းပေါင်း", "ဆန်ပြုတ်", "ပေါင်မုန့်"],
+    correctAnswerIndex: 1,
+    explanation: "ข้าวเหนียว (/khâaw-nĭaw/) သည် 'ကောက်ညှင်းပေါင်း' ဖြစ်ပါသည်။"
+  },
+  {
+    id: 12,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "ส้มตำ",
+    phonetic: "/sôm-tam/",
+    myanmarReading: "စုန့်(မ်)တမ်(မ်)",
+    category: "အစားအသောက်",
+    options: ["ခေါက်ဆွဲကြော်", "သင်္ဘောသီးထောင်း", "ကြက်ကင်", "အမဲသားဟင်း"],
+    correctAnswerIndex: 1,
+    explanation: "ส้มตำ (/sôm-tam/) သည် နာမည်ကျော် 'သင်္ဘောသီးထောင်း' ဖြစ်ပါသည်။"
+  },
+  {
+    id: 13,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "ข้าวมันไก่",
+    phonetic: "/khâaw-man-kày/",
+    myanmarReading: "ခေါက်(ဝ်)မန်(န်)ကိုင်(ယ်)",
+    category: "အစားအသောက်",
+    options: ["ဝက်လက်ထမင်း", "ကြက်ဆီထမင်း", "ကြက်သားဒံပေါက်", "ထမင်းဖြူ"],
+    correctAnswerIndex: 1,
+    explanation: "ข้าวมันไก่ (/khâaw-man-kày/) သည် 'ကြက်ဆီထမင်း' ဖြစ်ပါသည်။"
+  },
+  {
+    id: 14,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "ต้มยำ",
+    phonetic: "/tôm-yam/",
+    myanmarReading: "တုန့်(မ်)ယမ်(မ်)",
+    category: "အစားအသောက်",
+    options: ["တုံယမ်းဟင်းချို", "ငါးသေတ္တာဟင်း", "အသီးအရွက်ကြော်", "ပဲဟင်း"],
+    correctAnswerIndex: 0,
+    explanation: "ต้มยำ (/tôm-yam/) သည် အချဉ်စပ် 'တုံယမ်းဟင်းချို' ဖြစ်ပါသည်။"
+  },
+  {
+    id: 15,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "แตงโม",
+    phonetic: "/tɛɛŋ-moo/",
+    myanmarReading: "တဲ(င်)မို",
+    category: "အစားအသောက်",
+    options: ["လိမ္မော်သီး", "ဖရဲသီး", "ဒူးရင်းသီး", "သရက်သီး"],
+    correctAnswerIndex: 1,
+    explanation: "แตงโม (/tɛɛŋ-moo/) သည် 'ဖရဲသီး' ဖြစ်ပါသည်။"
+  },
+
+  // 16-20: ဈေးဝယ်ခြင်းနှင့် အဝတ်အထည်
+  {
+    id: 16,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "เสื้อแขนยาว",
+    phonetic: "/sʉ̂a-khɛ̌ɛn-yaaw/",
+    myanmarReading: "စွတ်အာ့ခဲ(န်)ယောင်(ဝ်)",
+    category: "ဈေးဝယ်ခြင်း",
+    options: ["အင်္ကျီလက်တို", "အင်္ကျီလက်ရှည်", "ဘောင်းဘီရှည်", "စကတ်တို"],
+    correctAnswerIndex: 1,
+    explanation: "เสื้อแขนยาว (/sʉ̂a-khɛ̌ɛn-yaaw/) သည် 'အင်္ကျီလက်ရှည်' ဖြစ်ပါသည်။"
+  },
+  {
+    id: 17,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "กางเกง",
+    phonetic: "/kaaŋ-keeŋ/",
+    myanmarReading: "ကန်(င်)ကိန်(င်)",
+    category: "ဈေးဝယ်ခြင်း",
+    options: ["ဘောင်းဘီ", "စကတ်", "ဖိနပ်", "ဦးထုပ်"],
+    correctAnswerIndex: 0,
+    explanation: "กางเกง (/kaaŋ-keeŋ/) သည် 'ဘောင်းဘီ' ဖြစ်ပါသည်။"
+  },
+  {
+    id: 18,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "กระเป๋าสตางค์",
+    phonetic: "/krà-păw-sa-tàaŋ/",
+    myanmarReading: "ကရပေါင်(ဝ်)စတာန်(င်)",
+    category: "ဈေးဝယ်ခြင်း",
+    options: ["ကျောပိုးအိတ်", "ပိုက်ဆံအိတ်", "ခရီးဆောင်အိတ်", "လက်ဆွဲအိတ်"],
+    correctAnswerIndex: 1,
+    explanation: "กระเป๋าสตางค์ (/krà-păw-sa-tàaŋ/) သည် 'ပိုက်ဆံအိတ်' ဖြစ်ပါသည်။"
+  },
+  {
+    id: 19,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "รองเท้าแตะ",
+    phonetic: "/rɔɔŋ-tháaw-tɛ́/",
+    myanmarReading: "ရော်(င်)ထောင်(ဝ်)တဲ",
+    category: "ဈေးဝယ်ခြင်း",
+    options: ["ရှူးဖိနပ်", "ညှပ်ဖိနပ်", "ဒေါက်ဖိနပ်", "လည်ရှည်ဖိနပ်"],
+    correctAnswerIndex: 1,
+    explanation: "รองเท้าแตะ (/rɔɔŋ-tháaw-tɛ́/) သည် 'ညှပ်ဖိနပ်' ဖြစ်ပါသည်။"
+  },
+  {
+    id: 20,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "ลดราคา",
+    phonetic: "/lót-raa-khaa/",
+    myanmarReading: "လို(တ်)ရာခါ",
+    category: "ဈေးဝယ်ခြင်း",
+    options: ["ဈေးတက်သည်", "ဈေးလျှော့သည်", "ငွေရှင်းသည်", "ငွေအမ်းသည်"],
+    correctAnswerIndex: 1,
+    explanation: "ลดราคา (/lót-raa-khaa/) သည် 'ဈေးနှုန်းလျှော့ပေးသည်' ဖြစ်ပါသည်။"
+  },
+
+  // 21-24: ကိန်းဂဏန်းနှင့် အချိန်
+  {
+    id: 21,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "หนึ่งร้อย",
+    phonetic: "/nʉ̀ŋ-rɔ́ɔy/",
+    myanmarReading: "နင်(င်)ရော်(ယ်)",
+    category: "ကိန်းဂဏန်း",
+    options: ["တစ်ဆယ် (၁၀)", "တစ်ရာ (၁၀၀)", "တစ်ထောင် (၁,၀၀၀)", "တစ်သောင်း (၁၀,၀၀၀)"],
+    correctAnswerIndex: 1,
+    explanation: "หนึ่งร้อย (/nʉ̀ŋ-rɔ́ɔy/) သည် 'တစ်ရာ (၁၀၀)' ဖြစ်ပါသည်။"
+  },
+  {
+    id: 22,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "ตอนนี้กี่โมงแล้ว",
+    phonetic: "/tɔɔn-níi-kìi-mooŋ-lɛ́ɛw/",
+    myanmarReading: "တော်(န်)နီကီမုန်(င်)လဲဝို(ဝ်)",
+    category: "အချိန်",
+    options: ["အခု ဘယ်နှနာရီရှိပြီလဲ", "ဘယ်တော့ အလုပ်ဆင်းမလဲ", "ဒီနေ့ ဘယ်ရက်နေ့လဲ", "ဘယ်အချိန် လာမလဲ"],
+    correctAnswerIndex: 0,
+    explanation: "ตอนนี้กี่โมงแล้ว သည် 'အခု ဘယ်နှနာရီ ရှိပြီလဲ' ဟု အချိန်မေးမြန်းခြင်း ဖြစ်ပါသည်။"
+  },
+  {
+    id: 23,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "พรุ่งนี้",
+    phonetic: "/phrûŋ-níi/",
+    myanmarReading: "ဖရု(င်)နီ",
+    category: "အချိန်",
+    options: ["မနေ့က", "ဒီနေ့", "မနက်ဖြန်", "သဘက်ခါ"],
+    correctAnswerIndex: 2,
+    explanation: "พรุ่งนี้ (/phrûŋ-níi/) သည် 'မနက်ဖြန်' ဖြစ်ပါသည်။"
+  },
+  {
+    id: 24,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "เที่ยงวัน",
+    phonetic: "/thîaŋ-wan/",
+    myanmarReading: "ထီ့ယမ့်(င်)ဝမ်(န်)",
+    category: "အချိန်",
+    options: ["မနက် ၆ နာရီ", "မွန်းတည့် ၁၂ နာရီ", "သန်းခေါင်ယံ ၁၂ နာရီ", "ညနေ ၄ နာရီ"],
+    correctAnswerIndex: 1,
+    explanation: "เที่ยงวัน (/thîaŋ-wan/) သည် 'နေ့လယ် မွန်းတည့် ၁၂ နာရီ' ဖြစ်ပါသည်။"
+  },
+
+  // 25-27: နေရာဒေသနှင့် လမ်းညွှန်
+  {
+    id: 25,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "ตลาด",
+    phonetic: "/ta-làat/",
+    myanmarReading: "တလာ(တ်)",
+    category: "နေရာဒေသ",
+    options: ["ဆေးရုံ", "ဈေး", "ကျောင်း", "ဘူတာရုံ"],
+    correctAnswerIndex: 1,
+    explanation: "ตลาด (/ta-làat/) သည် 'ဈေး' ဖြစ်ပါသည်။"
+  },
+  {
+    id: 26,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "สนามบิน",
+    phonetic: "/sa-năam-bin/",
+    myanmarReading: "စနာမ်(မ်)ဘင်(န်)",
+    category: "နေရာဒေသ",
+    options: ["လေယာဉ်ကွင်း", "ကားဂိတ်", "သင်္ဘောဆိပ်", "မီးရထားဘူတာ"],
+    correctAnswerIndex: 0,
+    explanation: "สนามบิน (/sa-năam-bin/) သည် 'လေယာဉ်ကွင်း / လေဆိပ်' ဖြစ်ပါသည်။"
+  },
+  {
+    id: 27,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "เลี้ยวซ้าย",
+    phonetic: "/líaw-sáay/",
+    myanmarReading: "လီယို(ဝ်)ဆိုင်(ယ်)",
+    category: "လမ်းညွှန်",
+    options: ["တည့်တည့်သွား", "ဘယ်ဘက်ကွေ့", "ညာဘက်ကွေ့", "အနောက်ပြန်လှည့်"],
+    correctAnswerIndex: 1,
+    explanation: "เลี้ยวซ้าย (/líaw-sáay/) သည် 'ဘယ်ဘက်သို့ ကွေ့ပါ' ဖြစ်ပါသည်။"
+  },
+
+  // 28-30: ကျန်းမာရေး၊ အလုပ်အကိုင်နှင့် မိုးလေဝသ
+  {
+    id: 28,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "โรงพยาบาล",
+    phonetic: "/rooŋ-pha-yaa-baan/",
+    myanmarReading: "ရုန်(င်)ဖယာဘာန်(န်)",
+    category: "ကျန်းမာရေး",
+    options: ["ဆေးဆိုင်", "ဆေးရုံ", "စာကြည့်တိုက်", "စားသောက်ဆိုင်"],
+    correctAnswerIndex: 1,
+    explanation: "โรงพยาบาล (/rooŋ-pha-yaa-baan/) သည် 'ဆေးရုံ' ဖြစ်ပါသည်။"
+  },
+  {
+    id: 29,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "วิศวกร",
+    phonetic: "/wí-sa-wá-kɔɔn/",
+    myanmarReading: "ဝိစဝါကော်(န်)",
+    category: "အလုပ်အကိုင်",
+    options: ["ဆရာဝန်", "အင်ဂျင်နီယာ", "ရှေ့နေ", "ရဲအရာရှိ"],
+    correctAnswerIndex: 1,
+    explanation: "วิศวกร (/wí-sa-wá-kɔɔn/) သည် 'အင်ဂျင်နီယာ' ဖြစ်ပါသည်။"
+  },
+  {
+    id: 30,
+    question: "အောက်ပါ ထိုင်းစကားလုံး၏ မှန်ကန်သော မြန်မာအဓိပ္ပာယ်ကို ရွေးချယ်ပါ -",
+    thaiWord: "ฝนตกหนัก",
+    phonetic: "/fŏn-tòk-nàk/",
+    myanmarReading: "ဖွန်(န်)တို(က်)နက်(က်)",
+    category: "မိုးလေဝသ",
+    options: ["နေပူပြင်းသည်", "မိုးသည်းထန်စွာရွာသည်", "နှင်းကျသည်", "မြူဆိုင်းသည်"],
+    correctAnswerIndex: 1,
+    explanation: "ฝนตกหนัก (/fŏn-tòk-nàk/) သည် 'မိုးသည်းထန်စွာ ရွာသွန်းသည်' ဖြစ်ပါသည်။"
+  }
 ];
