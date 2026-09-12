@@ -44,7 +44,7 @@ export const Header: FC<HeaderProps> = ({ currentTab, streak }) => {
           <span className="text-[#F2D705] text-[16px] leading-none select-none">🔥</span>
           <span className="font-mono text-[12px] font-bold text-[#2c0043]">{streak}</span>
         </div>
-        <div className="w-8 h-8 rounded-full bg-[#4b006e] text-white flex items-center justify-center shadow-xs">
+        <div className="w-8 h-8 rounded-full bg-[#2c0043] text-white flex items-center justify-center shadow-xs">
           <span className="material-symbols-outlined text-[18px]">person</span>
         </div>
       </div>

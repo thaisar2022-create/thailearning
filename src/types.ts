@@ -1,4 +1,43 @@
-export type CategoryId = 'all' | 'meat' | 'meal' | 'vegetable' | 'fruit' | 'drink' | 'places' | 'people';
+export type VocabCategory =
+  | 'pronouns'
+  | 'family'
+  | 'places'
+  | 'numbers'
+  | 'clothing'
+  | 'food'
+  | 'directions'
+  | 'medical'
+  | 'jobs'
+  | 'weather';
+
+export interface VocabWord {
+  id: string;
+  thai: string;
+  phonetic: string;
+  myanmar: string;
+  category: 'pronouns' | 'family' | 'places' | 'numbers' | 'clothing' | 'food' | 'directions' | 'medical' | 'jobs' | 'weather';
+  audioText?: string;
+  myanmarReading?: string;
+}
+
+export type CategoryId =
+  | 'all'
+  | 'pronouns'
+  | 'family'
+  | 'places'
+  | 'numbers'
+  | 'clothing'
+  | 'food'
+  | 'directions'
+  | 'medical'
+  | 'jobs'
+  | 'weather'
+  | 'meat'
+  | 'meal'
+  | 'vegetable'
+  | 'fruit'
+  | 'drink'
+  | 'people';
 
 export interface CategoryInfo {
   id: CategoryId;
@@ -16,7 +55,9 @@ export interface ThaiNoun {
   id: number;
   thai: string;
   phonetics: string;
+  phonetic?: string;
   burmesePhonetic: string;
+  myanmarReading?: string;
   burmeseMeaning: string;
   category: CategoryId;
   categoryNameBurmese: string;

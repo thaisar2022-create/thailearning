@@ -215,16 +215,16 @@ export const QuizView: React.FC = () => {
 
         {/* Prompt */}
         <div className="flex flex-col gap-1">
-          <h2 className="font-padauk font-bold text-[19px] text-[#1e1b19] leading-snug">
+          <h2 lang="my" className="font-padauk font-bold text-[19px] text-[#1e1b19] leading-snug">
             {toBurmeseNumber(currentQ.id)}။ "
-            <span className="text-[#2c0043] font-prompt font-bold">{currentQ.thaiWord}</span>"
+            <span lang="th" className="text-[#2c0043] font-prompt font-bold">{currentQ.thaiWord}</span>"
             ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။
           </h2>
           <div className="flex items-center gap-2 mt-1">
-            <span className="font-mono text-xs bg-[#f4ece8] text-[#4d4450] px-2.5 py-0.5 rounded-full">
-              အသံထွက်: [ {currentQ.phonetics} ]
+            <span className="font-mono text-xs bg-[#f4ece8] text-[#4d4450] px-2.5 py-0.5 rounded-full font-medium">
+              အသံထွက်: {currentQ.phonetics}
             </span>
-            <span className="font-padauk text-[11px] text-[#D97706] bg-[#D97706]/10 px-2 py-0.5 rounded-full font-semibold">
+            <span lang="my" className="font-padauk text-[11px] text-[#D97706] bg-[#D97706]/10 px-2 py-0.5 rounded-full font-semibold">
               • {currentQ.categoryTag}
             </span>
           </div>

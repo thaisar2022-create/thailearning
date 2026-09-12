@@ -22,41 +22,51 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const percent = Math.round((masteredCount / totalCount) * 100);
   const remainingCount = totalCount - masteredCount;
 
-  // 5 Daily Drill items from Image 1
+  // 5 Daily Drill items matching Thaisar Video Book standards
   const dailyDrills = [
     {
       id: '1',
       thai: 'ไก่',
-      phonetics: '[kài]',
+      phonetics: '/kày/',
+      phonetic: '/kày/',
       burmesePhonetic: 'ကိုင်',
+      myanmarReading: 'ကိုင်',
       burmeseMeaning: 'ကြက် / ကြက်သား',
     },
     {
       id: '2',
       thai: 'กุ้ง',
-      phonetics: '[kûng]',
-      burmesePhonetic: 'ကုန်',
+      phonetics: '/kûŋ/',
+      phonetic: '/kûŋ/',
+      burmesePhonetic: 'ကုန်း(င်)',
+      myanmarReading: 'ကုန်း(င်)',
       burmeseMeaning: 'ပုစွန်',
     },
     {
       id: '3',
       thai: 'ข้าวเหนียว',
-      phonetics: '[khâao-nĭao]',
-      burmesePhonetic: 'ခေါက်နီယို့',
-      burmeseMeaning: 'ကောက်ညှင်း',
+      phonetics: '/khâaw-nǐaw/',
+      phonetic: '/khâaw-nǐaw/',
+      burmesePhonetic: 'ခေါက်(ဝ်)နီယို့',
+      myanmarReading: 'ခေါက်(ဝ်)နီယို့',
+      burmeseMeaning: 'ကောက်ညှင်းပေါင်း',
     },
     {
       id: '4',
       thai: 'พริก',
-      phonetics: '[phrík]',
-      burmesePhonetic: 'ဖရစ်',
+      phonetics: '/phrík/',
+      phonetic: '/phrík/',
+      burmesePhonetic: 'ဖရစ်(က်)',
+      myanmarReading: 'ဖရစ်(က်)',
       burmeseMeaning: 'ငရုတ်သီး',
     },
     {
       id: '5',
       thai: 'ตลาด',
-      phonetics: '[thà-làat]',
-      burmesePhonetic: 'သလတ်',
+      phonetics: '/ta-làat/',
+      phonetic: '/ta-làat/',
+      burmesePhonetic: 'တလာ(တ်)',
+      myanmarReading: 'တလာ(တ်)',
       burmeseMeaning: 'ဈေး',
     },
   ];
@@ -215,16 +225,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   </button>
 
                   <div className="flex flex-col">
-                    <div className="flex items-baseline gap-1.5">
-                      <span className="font-prompt font-bold text-[16px] text-[#1e1b19] leading-tight">
+                    <div className="flex items-baseline gap-1.5 flex-wrap">
+                      <span lang="th" className="font-prompt font-bold text-[16px] text-[#1e1b19] leading-tight">
                         {drill.thai}
                       </span>
-                      <span className="font-mono text-[12px] text-[#4d4450] font-medium">
-                        {drill.phonetics}
+                      <span className="font-mono text-[12px] text-[#4a3e4c] font-semibold">
+                        {drill.phonetic || drill.phonetics}
+                      </span>
+                      <span lang="my" className="font-padauk text-[12px] text-[#524354]">
+                        ({drill.myanmarReading || drill.burmesePhonetic})
                       </span>
                     </div>
-                    <span className="font-padauk text-[12px] text-[#2c0043] font-semibold">
-                      {drill.burmesePhonetic} • {drill.burmeseMeaning}
+                    <span lang="my" className="font-padauk text-[12px] text-[#2c0043] font-semibold mt-0.5">
+                      {drill.burmeseMeaning}
                     </span>
                   </div>
                 </div>

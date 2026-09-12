@@ -51,26 +51,18 @@ export const BottomNav: FC<BottomNavProps> = ({ currentTab, onSelectTab }) => {
       <button
         id="nav-tab-flashcards"
         onClick={() => onSelectTab('flashcards')}
-        className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl transition-all ${
+        className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl transition-all cursor-pointer ${
           currentTab === 'flashcards'
             ? 'text-[#2c0043] font-bold'
             : 'text-[#4d4450] hover:text-[#2c0043]'
         }`}
       >
-        <div
-          className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${
-            currentTab === 'flashcards'
-              ? 'bg-[#4b006e] text-[#F2D705] shadow-xs scale-110 -mt-1'
-              : ''
-          }`}
+        <span
+          className="material-symbols-outlined text-[22px]"
+          style={currentTab === 'flashcards' ? { fontVariationSettings: "'FILL' 1" } : {}}
         >
-          <span
-            className="material-symbols-outlined text-[20px]"
-            style={currentTab === 'flashcards' ? { fontVariationSettings: "'FILL' 1" } : {}}
-          >
-            style
-          </span>
-        </div>
+          style
+        </span>
         <span className="text-[10px] font-padauk font-semibold tracking-tight">ကတ်များ</span>
       </button>
 

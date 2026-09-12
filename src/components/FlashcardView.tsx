@@ -226,26 +226,32 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
               <span className="font-prompt text-[10px] tracking-widest uppercase text-[#F2D705] font-bold bg-black/35 px-2.5 py-0.5 rounded-full border border-[#F2D705]/30 mb-2">
                 Thai Noun #{String(currentNoun.id).padStart(3, '0')}
               </span>
-              <h1 className="font-prompt text-[34px] text-white font-bold tracking-wide drop-shadow-md leading-tight">
+              <h1
+                lang="th"
+                className="font-prompt text-[34px] text-white font-bold tracking-wide drop-shadow-md leading-tight"
+              >
                 {currentNoun.thai}
               </h1>
               <div className="mt-2.5 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/40 border border-[#F2D705]/40 shadow-inner">
-                <span className="font-mono text-[13px] text-white/90 font-medium">
-                  {currentNoun.phonetics}
+                <span className="font-mono text-[13px] text-white/95 font-semibold">
+                  {currentNoun.phonetic || currentNoun.phonetics}
                 </span>
                 <span className="text-[#F2D705] text-xs">·</span>
-                <span className="font-padauk text-[14px] text-[#F2D705] font-bold">
-                  ({currentNoun.burmesePhonetic})
+                <span
+                  lang="my"
+                  className="font-padauk text-[14px] text-[#F2D705] font-bold"
+                >
+                  ({currentNoun.myanmarReading || currentNoun.burmesePhonetic})
                 </span>
               </div>
             </div>
 
             {/* Bottom Row */}
             <div className="flex items-center justify-between pt-2 border-t border-white/10 z-10">
-              <span className="font-mono text-[11px] text-white/70">{currentNoun.tone}</span>
+              <span className="font-mono text-[11px] text-white/80">{currentNoun.tone}</span>
               <div className="flex items-center gap-1.5 text-[#F2D705]">
                 <span className="material-symbols-outlined text-[16px] animate-spin">sync</span>
-                <span className="font-padauk text-[12px] font-semibold">လှန်၍ ကြည့်ပါ</span>
+                <span lang="my" className="font-padauk text-[12px] font-semibold">လှန်၍ ကြည့်ပါ</span>
               </div>
             </div>
           </div>
@@ -258,7 +264,10 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
                 <span className="material-symbols-outlined text-[#F2D705] text-[20px]">
                   translate
                 </span>
-                <span className="font-padauk text-[17px] text-[#2c0043] font-bold">
+                <span
+                  lang="my"
+                  className="font-padauk text-[17px] text-[#2c0043] font-bold"
+                >
                   {currentNoun.burmeseMeaning}
                 </span>
               </div>
@@ -270,10 +279,16 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
             {/* Meaning & Details */}
             <div className="flex flex-col gap-2 my-auto">
               <div className="bg-[#F4F0E8] rounded-lg p-2.5 border-l-4 border-l-[#F2D705]">
-                <span className="font-prompt text-[10px] uppercase font-bold text-[#4b006e]">
+                <span
+                  lang="my"
+                  className="font-prompt text-[10px] uppercase font-bold text-[#4b006e]"
+                >
                   ရှင်းလင်းချက် (Meaning)
                 </span>
-                <p className="font-padauk text-[13px] text-[#1e1b19] leading-relaxed mt-1">
+                <p
+                  lang="my"
+                  className="font-padauk text-[13px] text-[#1e1b19] leading-relaxed mt-1"
+                >
                   {currentNoun.meaningExplanation}
                 </p>
               </div>
@@ -281,10 +296,16 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
               {/* Example sentence */}
               <div className="bg-[#FDFBF7] rounded-lg p-2 border border-[#EBE5DA] flex items-center justify-between">
                 <div className="flex flex-col pr-2">
-                  <span className="font-prompt text-[13px] text-[#2c0043] font-bold">
+                  <span
+                    lang="th"
+                    className="font-prompt text-[13px] text-[#2c0043] font-bold"
+                  >
                     {currentNoun.exampleThai}
                   </span>
-                  <span className="font-padauk text-[12px] text-[#4d4450]">
+                  <span
+                    lang="my"
+                    className="font-padauk text-[12px] text-[#4d4450]"
+                  >
                     {currentNoun.exampleBurmese}
                   </span>
                 </div>

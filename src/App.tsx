@@ -9,7 +9,7 @@ import { CategoryId, TabType, ThaiNoun } from './types';
 import { THAI_NOUNS } from './data/nouns';
 
 export default function App() {
-  const [currentTab, setCurrentTab] = useState<TabType>('home');
+  const [currentTab, setCurrentTab] = useState<TabType>('vocab');
   const [selectedCategory, setSelectedCategory] = useState<CategoryId | undefined>(undefined);
   const [streak] = useState(12); // From screenshot badge 🔥 12
 
