@@ -1,0 +1,6 @@
+{
+  "name": "ထိုင်းအခြေခံနာမ် ၁၀၀ - 100 Essential Nouns",
+  "description": "ထိုင်းစကားပြော အခြေခံနာမ် ၁၀၀ လေ့လာရေး မိုဘိုင်းအက်ပ် (100 Essential Thai Nouns Bilingual Learning App)",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
