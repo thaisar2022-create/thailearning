@@ -418,19 +418,27 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
           onClick={handleToggleMastery}
           className={`flex items-center justify-center gap-2 py-2 px-3 rounded-xl border-2 shadow-sm transition-all cursor-pointer active:scale-95 ${
             isCurrentMastered
-              ? 'bg-[#16A34A] text-white border-[#16A34A]'
-              : 'bg-gradient-to-r from-[#2c0043] to-[#4b006e] text-white border-[#F2D705]'
+              ? 'bg-gradient-to-r from-[#2c0043] via-[#3d005e] to-[#4b006e] text-white border-[#FFDE34] ring-2 ring-[#FFDE34]/40 shadow-md'
+              : 'bg-[#F4F0E8] border-[#2c0043]/20 text-[#2c0043] hover:bg-[#eee7e3]'
           }`}
         >
           <span
-            className="material-symbols-outlined text-[#F2D705] text-[20px]"
+            className={`material-symbols-outlined text-[20px] ${
+              isCurrentMastered ? 'text-[#FFDE34]' : 'text-[#7f7381]'
+            }`}
             style={{ fontVariationSettings: "'FILL' 1" }}
           >
             check_circle
           </span>
           <div className="flex flex-col text-left">
             <span className="font-padauk text-[13px] font-bold leading-tight">မှတ်မိပြီ</span>
-            <span className="font-prompt text-[10px] text-[#F2D705] font-semibold">Mastered</span>
+            <span
+              className={`font-prompt text-[10px] font-semibold ${
+                isCurrentMastered ? 'text-[#FFDE34]' : 'text-[#7f7381]'
+              }`}
+            >
+              Mastered
+            </span>
           </div>
         </button>
       </div>

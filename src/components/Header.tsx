@@ -24,8 +24,9 @@ export const Header: FC<HeaderProps> = ({ currentTab, streak }) => {
     <header className="px-4 py-2.5 flex items-center justify-between border-b border-[#EBE5DA]/80 bg-[#fff8f5] z-30 sticky top-0">
       <div className="flex items-center gap-2.5">
         <img
-          src="https://lh3.googleusercontent.com/aida/AEtjO1WMsbcIut5Ojjduw6Xtx9czND4P6Rq3tHlr9UT-MQMSu64P3K6bATu9wrY_1QMU_EfeWfC0MmLir7PQR_TndlFlw0a--_2Jj1YEGzfZjE12TQ6AJDccXVogRDh2-7WyTubWgWIomMKC5emDC2dfb1Yr1dfWsVIZiVIemd9sUnY3K8W4BwCNcgvn6bkN1gHOhpkx-IS0NT4v5h4TawCAZxHhGh83Bkvb0TQqEzat0KEkHKtidfVh9pCpfzv-"
+          src="https://lh3.googleusercontent.com/pw/AP1GczN01qsKKBoF8MQL1HFzgXZpd8xkRpGvjngMxSlYtrkui_AYVQZEpQa8k8gvH0TrDsD6tbPAQHBOdd9TTdX4UogBgvwQ2VSARghRi1WMUas35ysIOcs=w2400"
           alt="Siam Lexicon Logo"
+          referrerPolicy="no-referrer"
           className="h-9 w-9 rounded-xl object-contain shadow-xs border border-[#EBE5DA]"
         />
         <div className="flex flex-col">

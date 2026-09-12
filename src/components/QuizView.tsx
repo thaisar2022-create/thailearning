@@ -162,7 +162,7 @@ export const QuizView: React.FC = () => {
           </div>
           <div className="flex items-center gap-2 font-padauk text-[10px]">
             <span className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-[#16A34A]" /> ဖြေပြီး
+              <span className="w-2 h-2 rounded-full bg-[#FFDE34]" /> ဖြေပြီး
             </span>
             <span className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full bg-[#4b006e]" /> လက်ရှိ
@@ -177,9 +177,9 @@ export const QuizView: React.FC = () => {
 
             let badgeStyle = 'bg-[#f4ece8] text-[#7f7381] hover:bg-[#eee7e3]';
             if (isCurrent) {
-              badgeStyle = 'bg-[#2c0043] text-white font-bold ring-2 ring-[#F2D705]';
+              badgeStyle = 'bg-[#2c0043] text-white font-bold ring-2 ring-[#FFDE34]';
             } else if (isAnswered) {
-              badgeStyle = 'bg-[#16A34A] text-white font-bold';
+              badgeStyle = 'bg-[#FFDE34] text-[#2c0043] font-bold shadow-xs';
             }
 
             return (
@@ -254,9 +254,9 @@ export const QuizView: React.FC = () => {
 
             if (isSelected) {
               if (isCorrectAnswer) {
-                borderStyle = 'border-[#16A34A] bg-[#f0fdf4] text-[#14532d] shadow-xs';
-                circleStyle = 'bg-[#16A34A] text-white border-[#16A34A]';
-                radioStyle = 'bg-[#16A34A] border-[#16A34A] text-white';
+                borderStyle = 'border-[#FFDE34] bg-[#fffdf0] text-[#2c0043] shadow-xs';
+                circleStyle = 'bg-[#FFDE34] text-[#2c0043] border-[#FFDE34]';
+                radioStyle = 'bg-[#FFDE34] border-[#FFDE34] text-[#2c0043]';
               } else {
                 borderStyle = 'border-[#E11D48] bg-[#fff1f2] text-[#7f1d1d]';
                 circleStyle = 'bg-[#E11D48] text-white border-[#E11D48]';
@@ -332,7 +332,7 @@ export const QuizView: React.FC = () => {
       {/* Bottom Performance Evaluation Banner */}
       <div className="bg-white rounded-xl p-3 border border-[#EBE5DA] shadow-xs flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-full bg-[#16A34A]/15 text-[#16A34A] flex flex-col items-center justify-center font-mono font-bold text-xs shrink-0">
+          <div className="w-11 h-11 rounded-full bg-[#FFDE34] text-[#2c0043] border border-[#FFDE34] flex flex-col items-center justify-center font-mono font-bold text-xs shrink-0 shadow-xs">
             {percentScore}%
           </div>
           <div className="flex flex-col">
@@ -374,7 +374,7 @@ export const QuizView: React.FC = () => {
               </div>
               <div>
                 <span className="block text-[#7f7381]">အဆင့်အတန်း</span>
-                <strong className="text-[#16A34A] text-sm">ထူးချွန် (A+)</strong>
+                <strong className="text-[#b45309] text-sm">ထူးချွန် (A+)</strong>
               </div>
             </div>
 
