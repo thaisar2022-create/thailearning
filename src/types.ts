@@ -8,14 +8,16 @@ export type VocabCategory =
   | 'directions'
   | 'medical'
   | 'jobs'
-  | 'weather';
+  | 'weather'
+  | 'time'
+  | 'calendar';
 
 export interface VocabWord {
   id: string;
   thai: string;
   phonetic: string;
   myanmar: string;
-  category: 'pronouns' | 'family' | 'places' | 'numbers' | 'clothing' | 'food' | 'directions' | 'medical' | 'jobs' | 'weather';
+  category: VocabCategory;
   audioText?: string;
   myanmarReading?: string;
 }
@@ -32,6 +34,8 @@ export type CategoryId =
   | 'medical'
   | 'jobs'
   | 'weather'
+  | 'time'
+  | 'calendar'
   | 'meat'
   | 'meal'
   | 'vegetable'

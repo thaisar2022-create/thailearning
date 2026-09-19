@@ -1,12 +1,24 @@
 import React, { useState } from 'react';
+import { VOCABULARY_DATA } from '../data/vocabulary';
 import { CategoryId, TabType } from '../types';
 import { playThaiSpeech } from '../utils/audio';
 
 interface DashboardViewProps {
   onNavigate: (tab: TabType, category?: CategoryId) => void;
   masteredCount: number;
-  totalCount: number;
+  totalCount?: number;
 }
+
+const toBurmeseNumber = (n: number): string => {
+  const burmeseDigits = ['၀', '၁', '၂', '၃', '၄', '၅', '၆', '၇', '၈', '၉'];
+  return String(n)
+    .split('')
+    .map((char) => {
+      const digit = parseInt(char, 10);
+      return isNaN(digit) ? char : burmeseDigits[digit];
+    })
+    .join('');
+};
 
 export const DashboardView: React.FC<DashboardViewProps> = ({
   onNavigate,
@@ -19,8 +31,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
     '2': true,
   });
 
-  const percent = Math.round((masteredCount / totalCount) * 100);
-  const remainingCount = totalCount - masteredCount;
+  const total = totalCount || VOCABULARY_DATA.length;
+  const percent = total > 0 ? Math.round((masteredCount / total) * 100) : 0;
+  const remainingCount = Math.max(0, total - masteredCount);
 
   // 5 Daily Drill items matching Thaisar Video Book standards
   const dailyDrills = [
@@ -108,14 +121,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div className="flex items-center justify-between gap-2">
             <div className="flex-1">
               <h1 className="font-padauk font-bold text-[20px] text-white leading-snug">
-                ထိုင်းစကားပြော အခြေခံစာလုံး ၁၀၀ လုံး
+                ထိုင်းစကားပြော အခြေခံစာလုံး {toBurmeseNumber(total)} လုံး
               </h1>
               <p className="text-[12px] text-[#e7b3ff] mt-0.5 font-medium font-padauk">
                 နေ့စဉ် ပုံမှန်လေ့ကျင့်မှု မှတ်တမ်း
               </p>
             </div>
 
-            {/* Circular Donut (42%) */}
+            {/* Circular Donut Progress */}
             <div className="relative w-20 h-20 shrink-0 flex items-center justify-center">
               <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
                 <circle
@@ -154,7 +167,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#F2D705]" />
               <span className="font-padauk text-white text-[12px]">
-                ကျက်မှတ်ပြီး: <strong className="font-mono text-[#F2D705]">{masteredCount}</strong> / ၁၀၀ လုံး
+                ကျက်မှတ်ပြီး: <strong className="font-mono text-[#F2D705]">{masteredCount}</strong> / {toBurmeseNumber(total)} လုံး
               </span>
             </div>
             <div className="font-padauk text-[#e7b3ff] text-[11px]">

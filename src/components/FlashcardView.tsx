@@ -1,6 +1,7 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { CATEGORIES } from '../data/categories';
 import { THAI_NOUNS } from '../data/nouns';
+import { VOCABULARY_DATA } from '../data/vocabulary';
 import { CategoryId, ThaiNoun } from '../types';
 import { playThaiSpeech } from '../utils/audio';
 
@@ -32,24 +33,38 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
   const [isFlipped, setIsFlipped] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [isReviewing, setIsReviewing] = useState<Set<number>>(new Set());
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
-  // Filter items
+  // Filter items based on selected category deck
   const filteredNouns = useMemo(() => {
     if (selectedCat === 'all') return THAI_NOUNS;
     return THAI_NOUNS.filter((item) => item.category === selectedCat);
   }, [selectedCat]);
 
+  // Exact counts per category for deck selection
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const n of THAI_NOUNS) {
+      counts[n.category] = (counts[n.category] || 0) + 1;
+    }
+    return counts;
+  }, []);
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Keep index in bound when category changes
   const safeIndex = Math.min(currentIndex, Math.max(0, filteredNouns.length - 1));
-  const currentNoun: ThaiNoun = filteredNouns[safeIndex] || THAI_NOUNS[13]; // Default to #14 ข้าวเหนียว if empty
+  const currentNoun: ThaiNoun = filteredNouns[safeIndex] || THAI_NOUNS[0];
 
   const currentCategoryInfo = CATEGORIES.find((c) => c.id === selectedCat);
-  const currentCatTitle = currentCategoryInfo ? currentCategoryInfo.burmese : 'အားလုံး (All)';
+  const currentCatTitle = currentCategoryInfo
+    ? `${currentCategoryInfo.burmese} (${toBurmeseNumber(filteredNouns.length)} လုံး)`
+    : `ဝေါဟာရ အားလုံး (${toBurmeseNumber(VOCABULARY_DATA.length)} လုံး)`;
 
   const isCurrentMastered = masteredWords.has(currentNoun.id);
-  const progressPercent = Math.round(((safeIndex + 1) / filteredNouns.length) * 100);
+  const progressPercent = filteredNouns.length > 0
+    ? Math.round(((safeIndex + 1) / filteredNouns.length) * 100)
+    : 0;
 
   const handleNext = () => {
     setIsFlipped(false);
@@ -76,9 +91,20 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
     );
   };
 
-  const playAudio = (text: string) => {
-    handlePlaySound(text);
-  };
+  // Close category dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowCatDropdown(false);
+      }
+    };
+    if (showCatDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showCatDropdown]);
 
   // Keyboard support: Spacebar or Enter to flip, Arrow keys to navigate
   useEffect(() => {
@@ -121,83 +147,114 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
     <div className="flex-1 px-4 pt-3 pb-24 flex flex-col gap-3.5">
       {/* Category Selector & Quick Stats Bar */}
       <div className="flex items-center justify-between gap-2">
-        <div className="relative">
+        {/* Category Selector Dropdown for focused deck practice */}
+        <div className="relative flex-1" ref={dropdownRef}>
           <button
             id="flashcard-category-btn"
             onClick={() => setShowCatDropdown(!showCatDropdown)}
-            className="flex items-center gap-1.5 bg-[#F4F0E8] hover:bg-[#eee7e3] px-3 py-1.5 rounded-lg border border-[#EBE5DA] text-left transition-colors cursor-pointer"
+            className="w-full flex items-center justify-between gap-1.5 bg-[#F4F0E8] hover:bg-[#eee7e3] px-3 py-2 rounded-xl border border-[#EBE5DA] text-left transition-colors cursor-pointer shadow-2xs"
+            aria-expanded={showCatDropdown}
+            aria-label="ရွေးချယ်ထားသော ကဏ္ဍ"
           >
-            <span className="material-symbols-outlined text-[#4b006e] text-[18px]">
-              {currentCategoryInfo ? currentCategoryInfo.icon : 'category'}
-            </span>
-            <span className="font-padauk text-[12px] text-[#1e1b19] font-semibold truncate max-w-[140px]">
-              {currentCatTitle}
-            </span>
-            <span className="material-symbols-outlined text-[#7f7381] text-[16px]">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="material-symbols-outlined text-[#4b006e] text-[18px] shrink-0">
+                {currentCategoryInfo ? currentCategoryInfo.icon : 'folder_open'}
+              </span>
+              <span className="font-padauk text-[12px] text-[#1e1b19] font-semibold truncate">
+                {currentCatTitle}
+              </span>
+            </div>
+            <span
+              className={`material-symbols-outlined text-[#7f7381] text-[18px] transition-transform ${
+                showCatDropdown ? 'rotate-180' : ''
+              }`}
+            >
               expand_more
             </span>
           </button>
 
-          {/* Category Dropdown Menu */}
+          {/* Focused Deck Category Dropdown Menu */}
           {showCatDropdown && (
-            <div className="absolute top-full left-0 mt-1 w-60 bg-white rounded-xl shadow-xl z-50 p-1.5 flex flex-col gap-1 border border-[#EBE5DA]">
+            <div className="absolute top-full left-0 mt-1.5 w-full max-h-80 overflow-y-auto bg-white rounded-xl shadow-2xl z-50 p-1.5 flex flex-col gap-1 border border-[#EBE5DA] divide-y divide-gray-100">
               <button
                 onClick={() => {
                   setSelectedCat('all');
                   setCurrentIndex(0);
+                  setIsFlipped(false);
                   setShowCatDropdown(false);
                 }}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-left text-xs font-padauk transition-colors cursor-pointer ${
+                className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-left text-xs font-padauk transition-colors cursor-pointer ${
                   selectedCat === 'all'
                     ? 'bg-[#f6d9ff] text-[#2c0043] font-bold'
                     : 'hover:bg-[#F4F0E8] text-[#1e1b19]'
                 }`}
               >
-                <span className="w-2.5 h-2.5 rounded-full bg-[#4b006e]" />
-                <span>အားလုံး (၁၀၀ လုံး)</span>
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#4b006e] shrink-0" />
+                  <span>ဝေါဟာရ အားလုံး (All Decks)</span>
+                </div>
+                <span className="font-padauk text-[11px] text-[#4b006e] bg-[#4b006e]/10 px-2 py-0.5 rounded-md font-bold shrink-0">
+                  {toBurmeseNumber(VOCABULARY_DATA.length)} လုံး လေ့ကျင့်မည်
+                </span>
               </button>
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => {
-                    setSelectedCat(cat.id);
-                    setCurrentIndex(0);
-                    setShowCatDropdown(false);
-                  }}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-left text-xs font-padauk transition-colors cursor-pointer ${
-                    selectedCat === cat.id
-                      ? 'bg-[#f6d9ff] text-[#2c0043] font-bold'
-                      : 'hover:bg-[#F4F0E8] text-[#1e1b19]'
-                  }`}
-                >
-                  <span
-                    className="w-2.5 h-2.5 rounded-full"
-                    style={{ backgroundColor: cat.tagColor }}
-                  />
-                  <span lang="my">{cat.burmese}</span>
-                </button>
-              ))}
+
+              <div className="pt-1 flex flex-col gap-1">
+                {CATEGORIES.map((cat) => {
+                  const count = categoryCounts[cat.id] || cat.wordCount;
+                  const isSelected = selectedCat === cat.id;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => {
+                        setSelectedCat(cat.id);
+                        setCurrentIndex(0);
+                        setIsFlipped(false);
+                        setShowCatDropdown(false);
+                      }}
+                      className={`flex items-center justify-between px-3 py-2 rounded-lg text-left text-xs font-padauk transition-colors cursor-pointer ${
+                        isSelected
+                          ? 'bg-[#f6d9ff] text-[#2c0043] font-bold'
+                          : 'hover:bg-[#F4F0E8] text-[#1e1b19]'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 truncate pr-2">
+                        <span
+                          className="w-2.5 h-2.5 rounded-full shrink-0"
+                          style={{ backgroundColor: cat.tagColor }}
+                        />
+                        <span lang="my" className="truncate">{cat.burmese}</span>
+                      </div>
+                      <span className="font-padauk text-[11px] text-[#4b006e] bg-purple-50 px-2 py-0.5 rounded-md font-medium shrink-0">
+                        {toBurmeseNumber(count)} လုံး လေ့ကျင့်မည်
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>
 
         {/* Counter and Pronounce Speaker */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <div className="flex flex-col items-end">
-            <span className="font-padauk text-[14px] text-[#4b006e] font-bold">
-              {toBurmeseNumber(safeIndex + 1)} / {selectedCat === 'all' ? '၁၀၀ လုံး' : `${toBurmeseNumber(filteredNouns.length)} လုံး`}
+            <span className="font-padauk text-[13px] text-[#4b006e] font-bold leading-tight">
+              {toBurmeseNumber(safeIndex + 1)} / {toBurmeseNumber(filteredNouns.length)} လုံး
             </span>
-            <span className="font-padauk text-[10px] text-[#7f7381]">စုစုပေါင်း ၁၀၀ လုံး</span>
+            <span className="font-padauk text-[10px] text-[#7f7381] leading-tight">
+              (စုစုပေါင်း {toBurmeseNumber(VOCABULARY_DATA.length)} လုံး)
+            </span>
           </div>
           <button
             id="flashcard-quick-audio-btn"
             onClick={() => handlePlaySound(currentNoun.thai)}
-            className={`w-8 h-8 rounded-full bg-[#F4F0E8] border border-[#EBE5DA] flex items-center justify-center text-[#4b006e] hover:bg-[#eee7e3] active:scale-90 transition-all cursor-pointer ${
+            className={`w-9 h-9 rounded-full bg-[#F4F0E8] border border-[#EBE5DA] flex items-center justify-center text-[#4b006e] hover:bg-[#eee7e3] active:scale-90 transition-all cursor-pointer ${
               isPlayingAudio ? 'text-[#F2D705] bg-[#2c0043]' : ''
             }`}
             title="အသံထွက် နားထောင်ရန်"
+            aria-label="အသံထွက် နားထောင်ရန်"
           >
-            <span className="material-symbols-outlined text-[18px]">
+            <span className="material-symbols-outlined text-[19px]">
               {isPlayingAudio ? 'graphic_eq' : 'volume_up'}
             </span>
           </button>
@@ -329,7 +386,7 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  playAudio(currentNoun.thai);
+                  handlePlaySound(currentNoun.thai);
                 }}
                 aria-label="Listen to Thai pronunciation"
                 className="p-3 bg-purple-600 hover:bg-purple-500 active:scale-95 rounded-full text-white shadow-lg transition flex items-center gap-2 cursor-pointer font-padauk font-semibold border border-purple-400/30"
@@ -368,6 +425,7 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
           onClick={handlePrev}
           className="w-12 h-12 rounded-xl bg-[#2c0043] hover:bg-[#3d005e] text-white flex items-center justify-center shadow-sm active:scale-95 transition-all cursor-pointer"
           title="Previous card"
+          aria-label="Previous card"
         >
           <span className="material-symbols-outlined text-[#F2D705] text-[22px]">arrow_back</span>
         </button>
@@ -376,6 +434,7 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
           id="flashcard-flip-btn"
           onClick={() => setIsFlipped(!isFlipped)}
           className="flex-1 h-12 rounded-xl bg-[#F2D705] hover:bg-[#e0c700] text-[#2c0043] font-bold flex items-center justify-center gap-2 shadow-md active:scale-95 border border-[#e0c700] ring-2 ring-[#F2D705]/40 transition-all cursor-pointer"
+          aria-label="ကတ်လှန်မည်"
         >
           <span className="material-symbols-outlined text-[20px]">flip</span>
           <span className="font-padauk text-[14px] font-bold">
@@ -388,6 +447,7 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
           onClick={handleNext}
           className="w-12 h-12 rounded-xl bg-[#2c0043] hover:bg-[#3d005e] text-white flex items-center justify-center shadow-sm active:scale-95 transition-all cursor-pointer"
           title="Next card"
+          aria-label="Next card"
         >
           <span className="material-symbols-outlined text-[#F2D705] text-[22px]">
             arrow_forward
@@ -461,6 +521,7 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
           onClick={handleShuffle}
           className="p-2 rounded-lg bg-[#F4F0E8] text-[#2c0043] hover:bg-[#eee7e3] border border-[#EBE5DA] flex items-center justify-center transition-transform active:scale-90 cursor-pointer"
           title="ရောမွှေမည် (Shuffle)"
+          aria-label="ရောမွှေမည် (Shuffle)"
         >
           <span className="material-symbols-outlined text-[18px]">shuffle</span>
         </button>
