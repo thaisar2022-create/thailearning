@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { QUIZ_QUESTIONS, QuizQuestion } from '../data/quiz';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { QUIZ_QUESTIONS, QUIZ_SECTIONS, QuizQuestion } from '../data/quiz';
 import { playThaiSpeech } from '../utils/audio';
 
 const OPTION_KEYS = ['က', 'ခ', 'ဂ', 'ဃ'] as const;
@@ -17,14 +17,29 @@ const toBurmeseNumber = (n: number): string => {
 };
 
 export const QuizView: React.FC = () => {
-  // Always default to Question 1 (index 0) with fresh empty state
+  const [selectedSectionId, setSelectedSectionId] = useState<number | 'all'>('all');
+  const [showSectionDropdown, setShowSectionDropdown] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [selectedAnswers, setSelectedAnswers] = useState<{ [questionId: number]: number }>({});
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [secondsElapsed, setSecondsElapsed] = useState<number>(0);
   const [showCelebration, setShowCelebration] = useState(false);
+  const sectionDropdownRef = useRef<HTMLDivElement | null>(null);
 
-  // Clear any existing localStorage state on mount to ensure fresh start at Question 1
+  // Filter active questions by selected section
+  const activeQuestions: QuizQuestion[] = useMemo(() => {
+    if (selectedSectionId === 'all') return QUIZ_QUESTIONS;
+    return QUIZ_QUESTIONS.filter((q) => q.sectionId === selectedSectionId);
+  }, [selectedSectionId]);
+
+  // Current active question
+  const safeIndex = Math.min(currentQuestionIndex, Math.max(0, activeQuestions.length - 1));
+  const currentQ: QuizQuestion = activeQuestions[safeIndex] || activeQuestions[0] || QUIZ_QUESTIONS[0];
+  const totalQuestions = activeQuestions.length;
+
+  const currentSectionInfo = QUIZ_SECTIONS.find((s) => s.id === selectedSectionId);
+
+  // Clear any existing localStorage state on mount
   useEffect(() => {
     try {
       localStorage.removeItem('thai_quiz_state');
@@ -33,7 +48,25 @@ export const QuizView: React.FC = () => {
     }
   }, []);
 
-  // Live timer simulation
+  // Close section dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        sectionDropdownRef.current &&
+        !sectionDropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowSectionDropdown(false);
+      }
+    };
+    if (showSectionDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showSectionDropdown]);
+
+  // Live timer
   useEffect(() => {
     const interval = setInterval(() => {
       setSecondsElapsed((prev) => prev + 1);
@@ -47,13 +80,10 @@ export const QuizView: React.FC = () => {
     return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
 
-  const currentQ: QuizQuestion = QUIZ_QUESTIONS[currentQuestionIndex] || QUIZ_QUESTIONS[0];
-  const totalQuestions = QUIZ_QUESTIONS.length;
-
-  // Calculate score
+  // Calculate score for active deck
   let correctAnswersCount = 0;
   let answeredCount = 0;
-  QUIZ_QUESTIONS.forEach((q) => {
+  activeQuestions.forEach((q) => {
     const userSelectedOptionIdx = selectedAnswers[q.id];
     if (userSelectedOptionIdx !== undefined) {
       answeredCount++;
@@ -64,7 +94,7 @@ export const QuizView: React.FC = () => {
   });
 
   const percentScore = answeredCount > 0 ? Math.round((correctAnswersCount / answeredCount) * 100) : 0;
-  const progressPercent = Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100);
+  const progressPercent = Math.round(((safeIndex + 1) / totalQuestions) * 100);
 
   const handleSelectOption = (optionIndex: number) => {
     setSelectedAnswers((prev) => ({
@@ -74,7 +104,7 @@ export const QuizView: React.FC = () => {
   };
 
   const handleNextQuestion = () => {
-    if (currentQuestionIndex < totalQuestions - 1) {
+    if (safeIndex < totalQuestions - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
       setShowCelebration(true);
@@ -82,7 +112,7 @@ export const QuizView: React.FC = () => {
   };
 
   const handleSkipQuestion = () => {
-    if (currentQuestionIndex < totalQuestions - 1) {
+    if (safeIndex < totalQuestions - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     }
   };
@@ -101,17 +131,99 @@ export const QuizView: React.FC = () => {
     setSelectedAnswers({});
     setSecondsElapsed(0);
     setShowCelebration(false);
-    try {
-      localStorage.removeItem('thai_quiz_state');
-    } catch {
-      // ignore
-    }
+  };
+
+  const handleSelectSection = (id: number | 'all') => {
+    setSelectedSectionId(id);
+    setCurrentQuestionIndex(0);
+    setShowSectionDropdown(false);
   };
 
   const selectedOptionIdxForCurrent = selectedAnswers[currentQ.id];
 
   return (
     <div className="flex-1 px-4 pt-3 pb-24 flex flex-col gap-3">
+      {/* Quiz Section Selector Bar */}
+      <div className="relative" ref={sectionDropdownRef}>
+        <button
+          onClick={() => setShowSectionDropdown(!showSectionDropdown)}
+          className="w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl bg-white border border-[#EBE5DA] shadow-2xs hover:bg-[#FAF8F5] transition-colors cursor-pointer"
+          aria-haspopup="listbox"
+          aria-expanded={showSectionDropdown}
+          aria-label="အခန်းအလိုက် ဉာဏ်စမ်း ရွေးချယ်ရန်"
+        >
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="material-symbols-outlined text-[#4b006e] text-[18px] shrink-0">
+              quiz
+            </span>
+            <div className="flex flex-col text-left truncate">
+              <span className="font-padauk text-[12px] font-bold text-[#2c0043] truncate">
+                {currentSectionInfo
+                  ? `${currentSectionInfo.title} - ${currentSectionInfo.subtitle} (${toBurmeseNumber(currentSectionInfo.count)} ပုဒ်)`
+                  : `ဉာဏ်စမ်း အားလုံး (${toBurmeseNumber(QUIZ_QUESTIONS.length)} ပုဒ်စုံစမ်းခြင်း)`}
+              </span>
+            </div>
+          </div>
+          <span
+            className={`material-symbols-outlined text-[#7f7381] text-[18px] transition-transform ${
+              showSectionDropdown ? 'rotate-180' : ''
+            }`}
+          >
+            expand_more
+          </span>
+        </button>
+
+        {/* Section Dropdown List */}
+        {showSectionDropdown && (
+          <div
+            role="listbox"
+            className="absolute top-full left-0 right-0 mt-1.5 max-h-72 overflow-y-auto bg-white rounded-xl shadow-xl z-50 p-1.5 border border-[#EBE5DA] divide-y divide-gray-100 flex flex-col gap-1"
+          >
+            <button
+              role="option"
+              aria-selected={selectedSectionId === 'all'}
+              onClick={() => handleSelectSection('all')}
+              className={`flex items-center justify-between px-3 py-2 rounded-lg text-left text-xs font-padauk cursor-pointer transition-colors ${
+                selectedSectionId === 'all'
+                  ? 'bg-[#f6d9ff] text-[#2c0043] font-bold'
+                  : 'hover:bg-[#F4F0E8] text-[#1e1b19]'
+              }`}
+            >
+              <span>ဉာဏ်စမ်း အားလုံး (၁၁ ခန်းလုံး ၁၁၀ ပုဒ်)</span>
+              <span className="font-padauk text-[11px] bg-[#4b006e]/10 text-[#4b006e] px-2 py-0.5 rounded-md font-bold">
+                {toBurmeseNumber(QUIZ_QUESTIONS.length)} ပုဒ်
+              </span>
+            </button>
+
+            <div className="pt-1 flex flex-col gap-0.5">
+              {QUIZ_SECTIONS.map((sec) => {
+                const isSelected = selectedSectionId === sec.id;
+                return (
+                  <button
+                    key={sec.id}
+                    role="option"
+                    aria-selected={isSelected}
+                    onClick={() => handleSelectSection(sec.id)}
+                    className={`flex items-center justify-between px-3 py-2 rounded-lg text-left text-xs font-padauk cursor-pointer transition-colors ${
+                      isSelected
+                        ? 'bg-[#f6d9ff] text-[#2c0043] font-bold'
+                        : 'hover:bg-[#F4F0E8] text-[#1e1b19]'
+                    }`}
+                  >
+                    <span className="truncate pr-2">
+                      <strong className="text-[#4b006e] font-semibold">{sec.title}</strong>: {sec.subtitle}
+                    </span>
+                    <span className="font-padauk text-[11px] bg-purple-50 text-[#4b006e] px-2 py-0.5 rounded-md font-medium shrink-0">
+                      {toBurmeseNumber(sec.count)} ပုဒ်
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* Quiz Assessment Top Status Bar */}
       <div className="flex items-center justify-between gap-1.5 flex-wrap">
         {/* Live Timer */}
@@ -144,7 +256,7 @@ export const QuizView: React.FC = () => {
       <div className="flex flex-col gap-1.5">
         <div className="flex items-center justify-between text-xs">
           <span className="font-padauk text-[15px] font-bold text-[#2c0043]">
-            မေးခွန်း <span className="font-padauk text-[#4b006e] text-[18px]">{toBurmeseNumber(currentQuestionIndex + 1)}</span> / {toBurmeseNumber(totalQuestions)}
+            မေးခွန်း <span className="font-padauk text-[#4b006e] text-[18px]">{toBurmeseNumber(safeIndex + 1)}</span> / {toBurmeseNumber(totalQuestions)}
           </span>
           <span className="font-padauk text-[12px] text-[#7f7381] font-semibold">
             {toBurmeseNumber(progressPercent)}% ပြီးစီး
@@ -160,7 +272,7 @@ export const QuizView: React.FC = () => {
         </div>
       </div>
 
-      {/* Question Number Strip (1 to 30) */}
+      {/* Question Number Strip */}
       <div className="bg-white rounded-2xl p-2.5 border border-[#EBE5DA] shadow-2xs flex flex-col gap-2">
         <div className="flex items-center justify-between text-[11px] text-[#4d4450]">
           <div className="flex items-center gap-1.5">
@@ -178,8 +290,8 @@ export const QuizView: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-1.5 overflow-x-auto py-1 scrollbar-none">
-          {QUIZ_QUESTIONS.map((q, idx) => {
-            const isCurrent = idx === currentQuestionIndex;
+          {activeQuestions.map((q, idx) => {
+            const isCurrent = idx === safeIndex;
             const isAnswered = selectedAnswers[q.id] !== undefined;
 
             let badgeStyle = 'bg-[#f4ece8] text-[#7f7381] hover:bg-[#eee7e3]';
@@ -196,7 +308,7 @@ export const QuizView: React.FC = () => {
                 aria-label={`မေးခွန်း ${idx + 1}`}
                 className={`w-7 h-7 shrink-0 rounded-lg flex items-center justify-center font-padauk font-bold text-[13px] transition-all cursor-pointer active:scale-95 ${badgeStyle}`}
               >
-                {toBurmeseNumber(q.id)}
+                {toBurmeseNumber(selectedSectionId === 'all' ? q.id : q.questionNumberInSection)}
               </button>
             );
           })}
@@ -206,10 +318,16 @@ export const QuizView: React.FC = () => {
       {/* Main Question Card */}
       <div className="bg-white rounded-2xl p-4 border border-[#EBE5DA] shadow-xs flex flex-col gap-3">
         {/* Question Header */}
-        <div className="flex items-center justify-between">
-          <span className="font-padauk text-xs text-[#7f7381] bg-[#f4ece8] px-2.5 py-1 rounded-full font-medium">
-            မေးခွန်းနံပါတ် {toBurmeseNumber(currentQ.id)}
-          </span>
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <span className="font-padauk text-xs text-[#7f7381] bg-[#f4ece8] px-2.5 py-1 rounded-full font-medium">
+              {currentQ.sectionTitle}
+            </span>
+            <span className="font-padauk text-xs text-[#4b006e] bg-[#f6d9ff] px-2.5 py-1 rounded-full font-bold">
+              အမှတ် {toBurmeseNumber(currentQ.questionNumberInSection)}/၁၀
+            </span>
+          </div>
+
           <button
             id="quiz-audio-btn"
             onClick={() => handlePlaySound(currentQ.thaiWord)}
@@ -218,6 +336,8 @@ export const QuizView: React.FC = () => {
                 ? 'bg-[#F2D705] text-[#1A0028] animate-pulse'
                 : 'bg-[#f6d9ff] text-[#4b006e] hover:bg-[#ebd0f5]'
             }`}
+            title="ထိုင်းစကားလုံး အသံထွက် နားထောင်ရန်"
+            aria-label="ထိုင်းစကားလုံး အသံထွက် နားထောင်ရန်"
           >
             <span className="material-symbols-outlined text-[16px]">volume_up</span>
             <span className="font-padauk text-[11px]">အသံ</span>
@@ -228,7 +348,7 @@ export const QuizView: React.FC = () => {
         <div className="flex flex-col gap-1">
           <div className="min-h-[54px] flex items-start">
             <h2 lang="my" className="font-padauk font-bold text-[19px] text-[#1e1b19] leading-snug">
-              {toBurmeseNumber(currentQ.id)}။ "
+              {toBurmeseNumber(selectedSectionId === 'all' ? currentQ.id : currentQ.questionNumberInSection)}။ "
               <span lang="th" className="text-[#2c0043] font-prompt font-bold">{currentQ.thaiWord}</span>"
               ၏ မြန်မာလို အဓိပ္ပာယ်မှာ အဘယ်နည်း။
             </h2>
@@ -332,7 +452,7 @@ export const QuizView: React.FC = () => {
           className="flex-1 py-3 px-4 rounded-xl bg-[#2c0043] hover:bg-[#3d005e] text-[#F2D705] font-padauk font-bold text-sm flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all cursor-pointer"
         >
           <span>
-            {currentQuestionIndex < totalQuestions - 1 ? 'နောက်မေးခွန်းသို့' : 'ရလဒ် အပြည့်အစုံ ကြည့်မည်'}
+            {safeIndex < totalQuestions - 1 ? 'နောက်မေးခွန်းသို့' : 'ရလဒ် အပြည့်အစုံ ကြည့်မည်'}
           </span>
           <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
         </button>
